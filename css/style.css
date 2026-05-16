@@ -45,17 +45,15 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
-
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
-
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; }
 
-/* Topbar */
+/* ---- Topbar ---- */
 .topbar {
   position: sticky;
   top: 0;
@@ -75,18 +73,11 @@ button { font-family: inherit; }
   gap: 16px;
 }
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 18px; letter-spacing: -0.01em;
 }
 .brand-mark { font-size: 22px; }
-.topbar-actions {
-  display: flex;
-  gap: 6px;
-}
+.topbar-actions { display: flex; gap: 6px; }
 .icon-btn {
   border: 1px solid var(--border);
   background: var(--bg-elev);
@@ -97,8 +88,7 @@ button { font-family: inherit; }
   cursor: pointer;
   transition: all 0.15s ease;
   font-weight: 500;
-  min-width: 38px;
-  height: 36px;
+  min-width: 38px; height: 36px;
 }
 .icon-btn:hover {
   border-color: var(--accent);
@@ -109,56 +99,21 @@ button { font-family: inherit; }
 [data-theme="dark"] #themeBtn .theme-icon-light { display: none; }
 [data-theme="dark"] #themeBtn .theme-icon-dark { display: inline; }
 
-/* App container */
 .app {
-  flex: 1;
-  width: 100%;
-  max-width: 1080px;
-  margin: 0 auto;
+  flex: 1; width: 100%; max-width: 1080px; margin: 0 auto;
   padding: 32px 20px 64px;
 }
-.loading {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 80px 20px;
-  font-size: 14px;
-}
+.loading { text-align: center; color: var(--text-muted); padding: 80px 20px; font-size: 14px; }
 
-/* Footer */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 24px 20px;
-  color: var(--text-muted);
-  font-size: 13px;
-}
-.footer-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
-}
+.footer { border-top: 1px solid var(--border); padding: 24px 20px; color: var(--text-muted); font-size: 13px; }
+.footer-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap: 8px; justify-content: center; }
 .footer-link:hover { color: var(--accent); }
 .footer-sep { opacity: 0.6; }
 
 /* ---- Home view ---- */
-.page-title {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px;
-}
-.page-subtitle {
-  color: var(--text-muted);
-  margin: 0 0 32px;
-  font-size: 15px;
-}
-.novel-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
+.page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; }
+.page-subtitle { color: var(--text-muted); margin: 0 0 32px; font-size: 15px; }
+.novel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
 .novel-card {
   background: var(--bg-elev);
   border: 1px solid var(--border);
@@ -166,9 +121,7 @@ button { font-family: inherit; }
   padding: 22px;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: flex; flex-direction: column; gap: 12px;
   box-shadow: var(--shadow);
 }
 .novel-card:hover {
@@ -177,62 +130,28 @@ button { font-family: inherit; }
   border-color: var(--accent-soft);
 }
 .novel-cover {
-  width: 100%;
-  aspect-ratio: 3 / 2;
+  width: 100%; aspect-ratio: 3 / 2;
   border-radius: var(--radius-sm);
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   color: white;
   font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 22px;
-  text-align: center;
-  padding: 16px;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-  word-break: keep-all;
+  font-weight: 700; font-size: 22px;
+  text-align: center; padding: 16px; line-height: 1.4;
+  letter-spacing: -0.01em; word-break: keep-all;
 }
-.novel-title {
-  font-size: 17px;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-}
-.novel-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.tag {
-  background: var(--bg-soft);
-  padding: 3px 9px;
-  border-radius: 20px;
-  font-size: 11.5px;
-  color: var(--text-soft);
-}
+.novel-title { font-size: 17px; font-weight: 700; margin: 0; letter-spacing: -0.01em; line-height: 1.4; }
+.novel-meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--text-muted); }
+.tag { background: var(--bg-soft); padding: 3px 9px; border-radius: 20px; font-size: 11.5px; color: var(--text-soft); }
 .novel-desc {
-  color: var(--text-soft);
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  color: var(--text-soft); font-size: 14px; line-height: 1.6; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
-.novel-status {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: auto;
-  padding-top: 4px;
-}
+.novel-status { font-size: 12px; color: var(--text-muted); margin-top: auto; padding-top: 4px; }
 
 /* ---- Novel detail view ---- */
+.reader-breadcrumb { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.reader-breadcrumb a:hover { color: var(--accent); }
 .novel-hero {
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -240,138 +159,94 @@ button { font-family: inherit; }
   margin-bottom: 36px;
   align-items: start;
 }
-.novel-hero .novel-cover {
-  aspect-ratio: 2 / 3;
-  font-size: 20px;
-}
-.novel-hero-info h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 10px;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-}
-.novel-hero-info .author {
-  color: var(--text-soft);
-  font-size: 15px;
-  margin-bottom: 14px;
-}
-.novel-hero-info .novel-meta {
-  margin-bottom: 18px;
-}
+.novel-hero .novel-cover { aspect-ratio: 2 / 3; font-size: 20px; }
+.novel-hero-info h1 { font-size: 32px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.02em; line-height: 1.3; }
+.novel-hero-info .author { color: var(--text-soft); font-size: 15px; margin-bottom: 14px; }
+.novel-hero-info .novel-meta { margin-bottom: 18px; }
 .novel-hero-info .description {
-  color: var(--text-soft);
-  line-height: 1.75;
-  font-size: 15px;
-  margin: 0 0 22px;
-  white-space: pre-wrap;
+  color: var(--text-soft); line-height: 1.75; font-size: 15px;
+  margin: 0 0 22px; white-space: pre-wrap;
 }
 .continue-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--accent);
-  color: #fff;
-  padding: 11px 22px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 14.5px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff;
+  padding: 11px 22px; border-radius: var(--radius-sm);
+  font-weight: 600; font-size: 14.5px; border: none; cursor: pointer;
+  transition: all 0.15s ease; text-decoration: none;
 }
-.continue-btn:hover {
-  background: var(--accent-soft);
-  transform: translateY(-1px);
-}
+.continue-btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
 
 .section-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0 0 14px;
-  letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  font-size: 18px; font-weight: 700; margin: 0 0 14px; letter-spacing: -0.01em;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.chapter-count {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
-}
+.chapter-count { font-size: 13px; font-weight: 500; color: var(--text-muted); }
 .chapter-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--bg-elev);
+  list-style: none; padding: 0; margin: 0;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; background: var(--bg-elev);
 }
 .chapter-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.15s ease;
-  gap: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.15s ease; gap: 12px;
 }
 .chapter-item:last-child { border-bottom: none; }
 .chapter-item:hover { background: var(--bg-soft); }
-.chapter-info {
-  flex: 1;
-  min-width: 0;
-}
+.chapter-info { flex: 1; min-width: 0; }
 .chapter-name {
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 15px; font-weight: 500; margin-bottom: 2px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.chapter-sub {
-  font-size: 12.5px;
-  color: var(--text-muted);
-}
+.chapter-sub { font-size: 12.5px; color: var(--text-muted); }
 .chapter-badge {
-  font-size: 11px;
-  color: var(--accent);
+  font-size: 11px; color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-weight: 600;
-  white-space: nowrap;
+  padding: 3px 8px; border-radius: 12px; font-weight: 600; white-space: nowrap;
 }
 
-/* ---- Reader view ---- */
-.reader {
-  max-width: var(--reader-width);
-  margin: 0 auto;
+/* ---- Empty / error ---- */
+.empty-state { text-align: center; padding: 64px 20px; color: var(--text-muted); }
+.empty-state h2 { font-size: 20px; font-weight: 600; color: var(--text-soft); margin: 0 0 8px; }
+.empty-state p { margin: 0 0 16px; font-size: 14px; }
+.empty-state a { color: var(--accent); font-weight: 500; }
+
+/* =====================================================
+   READER (fullscreen)
+   ===================================================== */
+body[data-page="reader"] .topbar,
+body[data-page="reader"] .footer {
+  display: none;
 }
-.reader-breadcrumb {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 8px;
+body[data-page="reader"] {
+  overflow: hidden;
+  /* Prevent iOS bounce */
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
-.reader-breadcrumb a:hover { color: var(--accent); }
-.reader-title {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px;
-  line-height: 1.35;
+body[data-page="reader"] .app {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
-.reader-novel {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
+
+.reader-fullscreen {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
 }
+
+/* Common reader body typography */
 .reader-body {
   font-family: var(--font-serif);
   font-size: var(--reader-fs);
@@ -380,19 +255,46 @@ button { font-family: inherit; }
   word-break: keep-all;
   overflow-wrap: break-word;
 }
-.reader-body p {
-  margin: 0 0 1.05em;
-}
+.reader-body p { margin: 0 0 1.05em; }
 .reader-body p:empty { display: none; }
-.reader-nav {
-  margin-top: 48px;
+
+/* ---- Scroll mode ---- */
+.reader-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+.reader-scroll-inner {
+  max-width: var(--reader-width);
+  margin: 0 auto;
+  padding: 80px 28px 120px;
+}
+.reader-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.reader-novel-label {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.reader-end-nav {
+  margin-top: 56px;
   padding-top: 24px;
   border-top: 1px solid var(--border);
   display: flex;
   gap: 12px;
   justify-content: space-between;
 }
-.nav-btn {
+.end-btn {
   flex: 1;
   background: var(--bg-elev);
   color: var(--text);
@@ -400,55 +302,292 @@ button { font-family: inherit; }
   padding: 14px 18px;
   border-radius: var(--radius-sm);
   font-size: 14px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.15s ease;
   font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
 }
-.nav-btn:hover:not(:disabled) {
+.end-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
   transform: translateY(-1px);
 }
-.nav-btn:disabled {
+.end-btn.next { text-align: right; }
+.end-btn.disabled {
   opacity: 0.4;
   cursor: not-allowed;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
-.nav-btn.next { text-align: right; align-items: flex-end; }
-.nav-btn-label {
-  font-size: 11.5px;
+.end-btn.next.disabled { justify-content: flex-end; }
+
+/* ---- Page mode ---- */
+.reader-pages {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.pages-strip {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.page {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  padding: 72px 36px 80px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.page > .reader-body { flex: 1; min-height: 0; overflow: hidden; }
+.page-title-inline {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+.page-novel-inline {
   color: var(--text-muted);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 13px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
 }
-.nav-btn-title {
+.measure-body {
+  /* For pagination measurement only; same typography as reader-body */
+}
+
+/* ---- Tap zones ---- */
+.tap-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 5;
+  pointer-events: none;
+}
+.tap-zone {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  outline: none;
+}
+.tap-zone.left { flex: 0 0 30%; cursor: w-resize; }
+.tap-zone.center { flex: 1; cursor: pointer; }
+.tap-zone.right { flex: 0 0 30%; cursor: e-resize; }
+.tap-zone:focus-visible { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+
+/* ---- Reader overlay (top / bottom bars) ---- */
+.reader-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(150%) blur(10px);
+  -webkit-backdrop-filter: saturate(150%) blur(10px);
+}
+.reader-overlay.top {
+  top: 0;
+  border-bottom: 1px solid var(--border);
+  transform: translateY(-100%);
+  padding-top: max(14px, env(safe-area-inset-top));
+}
+.reader-overlay.bottom {
+  bottom: 0;
+  border-top: 1px solid var(--border);
+  transform: translateY(100%);
+  justify-content: space-between;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+}
+body[data-reader-ui="visible"] .reader-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.overlay-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+.overlay-btn:hover { background: var(--bg-soft); }
+.overlay-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  line-height: 1.25;
+}
+.overlay-novel {
+  font-size: 12.5px;
+  color: var(--text-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 100%;
+}
+.overlay-chapter {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.overlay-progress {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 70px;
+}
+.overlay-chapter-nav { display: flex; gap: 6px; }
+.overlay-chap-btn {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.overlay-chap-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.overlay-chap-btn.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
-/* Empty / error */
-.empty-state {
-  text-align: center;
-  padding: 64px 20px;
-  color: var(--text-muted);
+/* ---- Settings panel ---- */
+.reader-settings-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
-.empty-state h2 {
-  font-size: 20px;
+.reader-settings-panel {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(100%);
+  width: min(440px, 100%);
+  background: var(--bg-elev);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.18);
+  z-index: 50;
+  padding: 12px 24px 28px;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reader-fullscreen[data-settings="open"] .reader-settings-panel {
+  transform: translateX(-50%) translateY(0);
+}
+.reader-fullscreen[data-settings="open"] .reader-settings-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+.settings-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 8px auto 18px;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-label {
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-soft);
-  margin: 0 0 8px;
 }
-.empty-state p { margin: 0 0 16px; font-size: 14px; }
-.empty-state a { color: var(--accent); font-weight: 500; }
+.settings-options { display: flex; align-items: center; gap: 4px; }
+.seg {
+  background: var(--bg-soft);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 0;
+}
+.seg-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.seg-btn.active {
+  background: var(--bg-elev);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.step-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  min-width: 38px;
+  transition: all 0.15s ease;
+}
+.step-btn:hover { border-color: var(--accent); color: var(--accent); }
+.step-val {
+  font-size: 13px;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+  min-width: 56px;
+  text-align: center;
+  font-weight: 500;
+}
 
-/* Responsive */
+/* ---- Responsive ---- */
 @media (max-width: 720px) {
   .app { padding: 24px 16px 48px; }
   .topbar-inner { padding: 10px 16px; }
@@ -458,19 +597,30 @@ button { font-family: inherit; }
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  .novel-hero .novel-cover {
-    max-width: 180px;
-    margin: 0 auto;
-  }
+  .novel-hero .novel-cover { max-width: 180px; margin: 0 auto; }
   .novel-hero-info h1 { font-size: 24px; text-align: center; }
   .novel-hero-info .author,
   .novel-hero-info .novel-meta { justify-content: center; text-align: center; }
   .novel-hero-info .novel-meta { display: flex; }
-  .novel-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
+  .novel-grid { grid-template-columns: 1fr; gap: 14px; }
+  .reader-scroll-inner { padding: 70px 20px 100px; }
   .reader-title { font-size: 22px; }
-  .reader-nav { flex-direction: column; }
-  .nav-btn.next { text-align: left; align-items: flex-start; }
+  .page { padding: 64px 22px 76px; }
+  .reader-overlay { padding: 12px 14px; }
+  .overlay-chap-btn { padding: 7px 10px; font-size: 12.5px; }
+  .reader-overlay.bottom { gap: 10px; }
+  .overlay-progress { min-width: 60px; font-size: 12px; }
+}
+
+@media (max-width: 420px) {
+  .overlay-chapter-nav .overlay-chap-btn { padding: 6px 8px; font-size: 12px; }
+  .page-title-inline { font-size: 20px; }
+}
+
+/* ---- Tap zone visual cue on touch (subtle) ---- */
+@media (hover: none) {
+  .tap-zone.left:active,
+  .tap-zone.right:active {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
 }

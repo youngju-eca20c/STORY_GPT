@@ -6,6 +6,23 @@ const Views = (() => {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
+  const parseParagraphs = (text, dropFirstIfEquals) => {
+    let parts = text
+      .replace(/\r\n/g, '\n')
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (dropFirstIfEquals && parts[0] && parts[0] === dropFirstIfEquals.trim()) {
+      parts = parts.slice(1);
+    }
+    return parts;
+  };
+
+  const paragraphHTML = (paragraphs) =>
+    paragraphs
+      .map((p) => `<p>${escapeHTML(p).replace(/\n/g, '<br>')}</p>`)
+      .join('');
+
   const renderHome = (novels) => {
     if (!novels.length) {
       return `<div class="empty-state">
@@ -76,45 +93,97 @@ const Views = (() => {
     `;
   };
 
-  const renderReader = (novel, chapter, text, prevChapter, nextChapter) => {
-    const paragraphs = text
-      .replace(/\r\n/g, '\n')
-      .split(/\n\s*\n/)
-      .map((p) => p.trim())
-      .filter(Boolean)
-      .map((p) => `<p>${escapeHTML(p).replace(/\n/g, '<br>')}</p>`)
-      .join('');
+  const renderReader = (novel, chapter, paragraphs, prevChapter, nextChapter, mode) => {
+    const prevHref = prevChapter
+      ? `#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(prevChapter.id)}`
+      : '';
+    const nextHref = nextChapter
+      ? `#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(nextChapter.id)}`
+      : '';
 
-    const prevBtn = prevChapter
-      ? `<a class="nav-btn prev" href="#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(prevChapter.id)}">
-          <span class="nav-btn-label">← 이전 화</span>
-          <span class="nav-btn-title">${escapeHTML(prevChapter.title)}</span>
-        </a>`
-      : `<button class="nav-btn prev" disabled>
-          <span class="nav-btn-label">이전 화 없음</span>
-          <span class="nav-btn-title">—</span>
-        </button>`;
+    const scrollContent = `
+      <div class="reader-scroll" data-role="scroll-container">
+        <div class="reader-scroll-inner">
+          <h1 class="reader-title">${escapeHTML(chapter.title)}</h1>
+          <div class="reader-novel-label">${escapeHTML(novel.title)}</div>
+          <div class="reader-body" data-role="scroll-body">${paragraphHTML(paragraphs)}</div>
+          <div class="reader-end-nav">
+            ${prevHref
+              ? `<a class="end-btn" href="${prevHref}">← 이전 화</a>`
+              : '<span class="end-btn disabled">이전 화 없음</span>'}
+            ${nextHref
+              ? `<a class="end-btn next" href="${nextHref}">다음 화 →</a>`
+              : '<span class="end-btn disabled">마지막 화입니다</span>'}
+          </div>
+        </div>
+      </div>`;
 
-    const nextBtn = nextChapter
-      ? `<a class="nav-btn next" href="#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(nextChapter.id)}">
-          <span class="nav-btn-label">다음 화 →</span>
-          <span class="nav-btn-title">${escapeHTML(nextChapter.title)}</span>
-        </a>`
-      : `<button class="nav-btn next" disabled>
-          <span class="nav-btn-label">마지막 화입니다</span>
-          <span class="nav-btn-title">—</span>
-        </button>`;
+    const pageContent = `
+      <div class="reader-pages" data-role="pages-viewport">
+        <div class="pages-strip" data-role="pages-strip"></div>
+        <div class="tap-overlay" data-role="tap-overlay">
+          <button class="tap-zone left" data-tap="prev" aria-label="이전 페이지"></button>
+          <button class="tap-zone center" data-tap="toggle" aria-label="컨트롤 토글"></button>
+          <button class="tap-zone right" data-tap="next" aria-label="다음 페이지"></button>
+        </div>
+      </div>`;
 
     return `
-      <article class="reader">
-        <div class="reader-breadcrumb">
-          <a href="#/novel/${encodeURIComponent(novel.id)}">← ${escapeHTML(novel.title)}</a>
+      <div class="reader-fullscreen" data-mode="${mode}" data-role="reader-root">
+        ${mode === 'page' ? pageContent : scrollContent}
+
+        <header class="reader-overlay top" data-role="overlay-top">
+          <a class="overlay-btn back" href="#/novel/${encodeURIComponent(novel.id)}" aria-label="회차 목록으로">←</a>
+          <div class="overlay-title">
+            <div class="overlay-novel">${escapeHTML(novel.title)}</div>
+            <div class="overlay-chapter">${escapeHTML(chapter.title)}</div>
+          </div>
+          <button class="overlay-btn" data-action="open-settings" aria-label="설정">⚙</button>
+        </header>
+
+        <footer class="reader-overlay bottom" data-role="overlay-bottom">
+          <div class="overlay-progress" data-role="overlay-progress">
+            ${mode === 'page'
+              ? `<span data-role="page-num">1</span> / <span data-role="page-total">…</span>`
+              : `<span data-role="scroll-pct">0%</span>`}
+          </div>
+          <div class="overlay-chapter-nav">
+            ${prevHref
+              ? `<a class="overlay-chap-btn" href="${prevHref}">← 이전 화</a>`
+              : '<span class="overlay-chap-btn disabled">← 이전 화</span>'}
+            ${nextHref
+              ? `<a class="overlay-chap-btn" href="${nextHref}">다음 화 →</a>`
+              : '<span class="overlay-chap-btn disabled">다음 화 →</span>'}
+          </div>
+        </footer>
+
+        <div class="reader-settings-backdrop" data-role="settings-backdrop"></div>
+        <div class="reader-settings-panel" data-role="settings-panel">
+          <div class="settings-handle"></div>
+          <div class="settings-row">
+            <span class="settings-label">읽기 모드</span>
+            <div class="settings-options seg">
+              <button data-set-mode="scroll" class="seg-btn ${mode === 'scroll' ? 'active' : ''}">스크롤</button>
+              <button data-set-mode="page" class="seg-btn ${mode === 'page' ? 'active' : ''}">페이지</button>
+            </div>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">테마</span>
+            <div class="settings-options seg">
+              <button data-set-theme="light" class="seg-btn" data-role="theme-light">라이트</button>
+              <button data-set-theme="dark" class="seg-btn" data-role="theme-dark">다크</button>
+            </div>
+          </div>
+          <div class="settings-row">
+            <span class="settings-label">글자 크기</span>
+            <div class="settings-options">
+              <button class="step-btn" data-font-step="-1">A−</button>
+              <span class="step-val" data-role="font-display">${Storage.getFontSize()}px</span>
+              <button class="step-btn" data-font-step="1">A+</button>
+            </div>
+          </div>
         </div>
-        <h1 class="reader-title">${escapeHTML(chapter.title)}</h1>
-        <div class="reader-novel">${escapeHTML(novel.title)}</div>
-        <div class="reader-body">${paragraphs}</div>
-        <nav class="reader-nav">${prevBtn}${nextBtn}</nav>
-      </article>
+      </div>
     `;
   };
 
@@ -126,5 +195,5 @@ const Views = (() => {
     </div>
   `;
 
-  return { renderHome, renderNovel, renderReader, renderError };
+  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, escapeHTML };
 })();
