@@ -52,10 +52,102 @@ const Views = (() => {
           <div class="novel-status">${escapeHTML(n.author || '')}${n.author && n.status ? ' · ' : ''}${escapeHTML(n.status || '')}</div>
         </a>`;
     }).join('');
+    const loreHref = novels.length === 1
+      ? `#/worldbuilding/${encodeURIComponent(novels[0].id)}`
+      : `#/worldbuilding`;
     return `
-      <h1 class="page-title">소설 서재</h1>
+      <div class="home-header">
+        <h1 class="page-title">소설 서재</h1>
+        <a class="lore-link" href="${loreHref}">
+          <span class="lore-link-icon">📖</span>
+          <span>설정집</span>
+        </a>
+      </div>
       <p class="page-subtitle">읽고 싶은 작품을 골라보세요.</p>
       <div class="novel-grid">${cards}</div>
+    `;
+  };
+
+  const renderWorldbuildingHub = (novels) => {
+    if (!novels.length) {
+      return `<div class="empty-state">
+        <h2>등록된 작품이 없습니다</h2>
+        <p><a href="#/">서재로 돌아가기</a></p>
+      </div>`;
+    }
+    const items = novels.map((n) => `
+      <a class="lore-hub-card" href="#/worldbuilding/${encodeURIComponent(n.id)}">
+        ${renderCover(n, 'lore-hub-cover')}
+        <div class="lore-hub-info">
+          <h3>${escapeHTML(n.title)}</h3>
+          <div class="lore-hub-meta">설정집 보기 →</div>
+        </div>
+      </a>
+    `).join('');
+    return `
+      <div class="reader-breadcrumb"><a href="#/">← 서재로</a></div>
+      <header class="lore-header">
+        <div class="lore-eyebrow">설정집</div>
+        <h1 class="lore-title">작품 선택</h1>
+      </header>
+      <div class="lore-hub-grid">${items}</div>
+    `;
+  };
+
+  const renderWorldbuilding = (novel, lore) => {
+    const world = (lore && lore.world) || [];
+    const characters = (lore && lore.characters) || [];
+
+    const worldHTML = world.length
+      ? `<section class="lore-section">
+          <h2 class="lore-section-title">세계관</h2>
+          <div class="lore-grid">
+            ${world.map((w) => `
+              <article class="lore-card">
+                <h3>${escapeHTML(w.title)}</h3>
+                <p>${escapeHTML(w.body)}</p>
+              </article>
+            `).join('')}
+          </div>
+        </section>`
+      : '';
+
+    const charactersHTML = characters.length
+      ? `<section class="lore-section">
+          <h2 class="lore-section-title">등장인물</h2>
+          <div class="character-grid">
+            ${characters.map((c) => `
+              <article class="character-card">
+                <div class="character-header">
+                  <h3 class="character-name">${escapeHTML(c.name)}</h3>
+                  <div class="character-role">${escapeHTML(c.role || '')}</div>
+                </div>
+                ${c.tags && c.tags.length
+                  ? `<div class="character-tags">${c.tags.map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>`
+                  : ''}
+                <p class="character-body">${escapeHTML(c.body || '')}</p>
+              </article>
+            `).join('')}
+          </div>
+        </section>`
+      : '';
+
+    const empty = !world.length && !characters.length
+      ? `<div class="empty-state">
+          <h2>설정집이 비어 있습니다</h2>
+          <p>novels/${escapeHTML(novel.id)}/worldbuilding.json 파일을 작성해 보세요.</p>
+        </div>`
+      : '';
+
+    return `
+      <div class="reader-breadcrumb"><a href="#/">← 서재로</a></div>
+      <header class="lore-header">
+        <div class="lore-eyebrow">설정집</div>
+        <h1 class="lore-title">${escapeHTML(novel.title)}</h1>
+      </header>
+      ${worldHTML}
+      ${charactersHTML}
+      ${empty}
     `;
   };
 
@@ -137,7 +229,7 @@ const Views = (() => {
       <div class="reader-pages" data-role="pages-viewport">
         <div class="pages-strip" data-role="pages-strip"></div>
         <div class="tap-overlay" data-role="tap-overlay">
-          <button class="tap-zone left" data-tap="prev" aria-label="이전 페이지"></button>
+          <button class="tap-zone left" data-tap="next" aria-label="다음 페이지"></button>
           <button class="tap-zone center" data-tap="toggle" aria-label="컨트롤 토글"></button>
           <button class="tap-zone right" data-tap="next" aria-label="다음 페이지"></button>
         </div>
@@ -218,5 +310,5 @@ const Views = (() => {
     </div>
   `;
 
-  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, escapeHTML, coverPath };
+  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, escapeHTML, coverPath, renderWorldbuilding, renderWorldbuildingHub };
 })();

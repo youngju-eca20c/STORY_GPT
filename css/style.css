@@ -112,8 +112,39 @@ button { font-family: inherit; }
 .footer-sep { opacity: 0.6; }
 
 /* ---- Home view ---- */
-.page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; }
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
 .page-subtitle { color: var(--text-muted); margin: 0 0 32px; font-size: 15px; }
+.lore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+.lore-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+.lore-link-icon { font-size: 16px; line-height: 1; }
 .novel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 .novel-card {
   background: var(--bg-elev);
@@ -218,6 +249,155 @@ button { font-family: inherit; }
   font-size: 11px; color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   padding: 3px 8px; border-radius: 12px; font-weight: 600; white-space: nowrap;
+}
+
+/* ---- Worldbuilding (설정집) ---- */
+.lore-header {
+  margin-bottom: 36px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+.lore-eyebrow {
+  font-size: 12.5px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lore-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+.lore-section { margin-bottom: 44px; }
+.lore-section:last-child { margin-bottom: 0; }
+.lore-section-title {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lore-section-title::before {
+  content: '';
+  width: 3px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.lore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.lore-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  transition: border-color 0.15s ease;
+}
+.lore-card:hover { border-color: var(--accent-soft); }
+.lore-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.lore-card p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-soft);
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+.character-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s ease;
+}
+.character-card:hover { border-color: var(--accent-soft); }
+.character-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.character-name {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.character-role {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+.character-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.character-body {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-soft);
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.lore-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.lore-hub-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow);
+}
+.lore-hub-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-soft);
+  box-shadow: var(--shadow-hover);
+}
+.lore-hub-cover {
+  width: 64px;
+  aspect-ratio: 2 / 3;
+  flex-shrink: 0;
+  font-size: 11px !important;
+  padding: 4px !important;
+}
+.lore-hub-info h3 {
+  font-size: 15px;
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+.lore-hub-meta {
+  font-size: 12.5px;
+  color: var(--text-muted);
 }
 
 /* ---- Empty / error ---- */
@@ -675,6 +855,9 @@ body[data-reader-ui="visible"] .reader-overlay {
   .topbar-inner { padding: 10px 16px; }
   .brand-name { font-size: 16px; }
   .page-title { font-size: 22px; }
+  .lore-title { font-size: 24px; }
+  .lore-link { padding: 7px 12px; font-size: 13px; }
+  .home-header { gap: 10px; }
   .novel-hero {
     grid-template-columns: 1fr;
     gap: 20px;

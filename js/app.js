@@ -75,6 +75,13 @@
     novelsCache[id] = { ...ref, ...meta, id };
     return novelsCache[id];
   };
+  const loadWorldbuilding = async (id) => {
+    try {
+      return await fetchJSON(`novels/${id}/worldbuilding.json`);
+    } catch {
+      return null;
+    }
+  };
 
   const showLoading = () => { app.innerHTML = '<div class="loading">불러오는 중…</div>'; };
 
@@ -464,6 +471,35 @@
     }
   };
 
+  const routeWorldbuildingHub = async () => {
+    clearReaderState();
+    showLoading();
+    try {
+      const novels = await loadIndex();
+      if (novels.length === 1) {
+        location.hash = `#/worldbuilding/${encodeURIComponent(novels[0].id)}`;
+        return;
+      }
+      app.innerHTML = Views.renderWorldbuildingHub(novels);
+    } catch (e) {
+      console.error(e);
+      app.innerHTML = Views.renderError('설정집을 불러올 수 없습니다');
+    }
+  };
+
+  const routeWorldbuilding = async (id) => {
+    clearReaderState();
+    showLoading();
+    try {
+      const novel = await loadNovel(id);
+      const lore = await loadWorldbuilding(id);
+      app.innerHTML = Views.renderWorldbuilding(novel, lore);
+    } catch (e) {
+      console.error(e);
+      app.innerHTML = Views.renderError('설정집을 찾을 수 없습니다', '주소를 확인해주세요.');
+    }
+  };
+
   const routeRead = async (novelId, chapterId) => {
     clearReaderState();
     showLoading();
@@ -501,6 +537,10 @@
     if (parts[0] === 'read' && parts[1] && parts[2]) {
       return routeRead(decodeURIComponent(parts[1]), decodeURIComponent(parts[2]));
     }
+    if (parts[0] === 'worldbuilding' && parts[1]) {
+      return routeWorldbuilding(decodeURIComponent(parts[1]));
+    }
+    if (parts[0] === 'worldbuilding') return routeWorldbuildingHub();
     return routeHome();
   };
 
