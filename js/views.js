@@ -1,4 +1,5 @@
 const Views = (() => {
+  const APP_VERSION = '0.6.0';
   const escapeHTML = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -65,6 +66,7 @@ const Views = (() => {
       </div>
       <p class="page-subtitle">읽고 싶은 작품을 골라보세요.</p>
       <div class="novel-grid">${cards}</div>
+      <div class="home-version">v${APP_VERSION}</div>
     `;
   };
 
@@ -98,9 +100,23 @@ const Views = (() => {
     const world = (lore && lore.world) || [];
     const characters = (lore && lore.characters) || [];
 
-    const worldHTML = world.length
-      ? `<section class="lore-section">
-          <h2 class="lore-section-title">세계관</h2>
+    if (!world.length && !characters.length) {
+      return `
+        <div class="reader-breadcrumb"><a href="#/">← 서재로</a></div>
+        <header class="lore-header">
+          <div class="lore-eyebrow">설정집</div>
+          <h1 class="lore-title">${escapeHTML(novel.title)}</h1>
+        </header>
+        <div class="empty-state">
+          <h2>설정집이 비어 있습니다</h2>
+          <p>novels/${escapeHTML(novel.id)}/worldbuilding.json 파일을 작성해 보세요.</p>
+        </div>`;
+    }
+
+    const defaultTab = world.length ? 'world' : 'characters';
+
+    const worldPane = world.length
+      ? `<section class="lore-pane" data-section="world"${defaultTab === 'world' ? '' : ' hidden'}>
           <div class="lore-grid">
             ${world.map((w) => `
               <article class="lore-card">
@@ -112,9 +128,8 @@ const Views = (() => {
         </section>`
       : '';
 
-    const charactersHTML = characters.length
-      ? `<section class="lore-section">
-          <h2 class="lore-section-title">등장인물</h2>
+    const charactersPane = characters.length
+      ? `<section class="lore-pane" data-section="characters"${defaultTab === 'characters' ? '' : ' hidden'}>
           <div class="character-grid">
             ${characters.map((c) => `
               <article class="character-card">
@@ -132,12 +147,11 @@ const Views = (() => {
         </section>`
       : '';
 
-    const empty = !world.length && !characters.length
-      ? `<div class="empty-state">
-          <h2>설정집이 비어 있습니다</h2>
-          <p>novels/${escapeHTML(novel.id)}/worldbuilding.json 파일을 작성해 보세요.</p>
-        </div>`
-      : '';
+    const tabs = `
+      <div class="lore-tabs" role="tablist" data-role="lore-tabs">
+        ${world.length ? `<button class="lore-tab${defaultTab === 'world' ? ' active' : ''}" role="tab" data-lore-tab="world">세계관</button>` : ''}
+        ${characters.length ? `<button class="lore-tab${defaultTab === 'characters' ? ' active' : ''}" role="tab" data-lore-tab="characters">등장인물</button>` : ''}
+      </div>`;
 
     return `
       <div class="reader-breadcrumb"><a href="#/">← 서재로</a></div>
@@ -145,9 +159,9 @@ const Views = (() => {
         <div class="lore-eyebrow">설정집</div>
         <h1 class="lore-title">${escapeHTML(novel.title)}</h1>
       </header>
-      ${worldHTML}
-      ${charactersHTML}
-      ${empty}
+      ${tabs}
+      ${worldPane}
+      ${charactersPane}
     `;
   };
 
@@ -249,10 +263,16 @@ const Views = (() => {
         </header>
 
         <footer class="reader-overlay bottom" data-role="overlay-bottom">
-          <div class="overlay-progress" data-role="overlay-progress">
-            ${mode === 'page'
-              ? `<span data-role="page-num">1</span> / <span data-role="page-total">…</span>`
-              : `<span data-role="scroll-pct">0%</span>`}
+          <div class="reader-progress">
+            <div class="progress-meta">
+              <span class="progress-chapter">${escapeHTML(chapter.title)}</span>
+              <span class="progress-position" data-role="progress-position">—</span>
+            </div>
+            <div class="progress-bar" data-role="progress-bar" role="slider" aria-label="읽기 진행도" tabindex="0">
+              <div class="progress-track"></div>
+              <div class="progress-fill" data-role="progress-fill"></div>
+              <div class="progress-handle" data-role="progress-handle"></div>
+            </div>
           </div>
           <div class="overlay-chapter-nav">
             ${prevHref

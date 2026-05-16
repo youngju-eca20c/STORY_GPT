@@ -248,9 +248,14 @@
       });
       const updateScrollPct = () => {
         const max = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-        const pct = max > 0 ? Math.round((scrollContainer.scrollTop / max) * 100) : 100;
-        const display = readerRoot.querySelector('[data-role="scroll-pct"]');
-        if (display) display.textContent = pct + '%';
+        const ratio = max > 0 ? scrollContainer.scrollTop / max : 1;
+        const pct = Math.round(ratio * 100);
+        const posEl = readerRoot.querySelector('[data-role="progress-position"]');
+        if (posEl) posEl.textContent = pct + '%';
+        const fill = readerRoot.querySelector('[data-role="progress-fill"]');
+        const handle = readerRoot.querySelector('[data-role="progress-handle"]');
+        if (fill) fill.style.width = pct + '%';
+        if (handle) handle.style.left = pct + '%';
       };
       let scrollTickTs = 0;
       scrollContainer.addEventListener('scroll', () => {
@@ -272,11 +277,21 @@
     let totalPages = 1;
     let pageData = [];
 
+    const updateProgressBar = (pct) => {
+      const p = Math.max(0, Math.min(1, pct));
+      const fill = readerRoot.querySelector('[data-role="progress-fill"]');
+      const handle = readerRoot.querySelector('[data-role="progress-handle"]');
+      if (fill) fill.style.width = (p * 100) + '%';
+      if (handle) handle.style.left = (p * 100) + '%';
+    };
     const updatePageIndicator = () => {
-      const numEl = readerRoot.querySelector('[data-role="page-num"]');
-      const totalEl = readerRoot.querySelector('[data-role="page-total"]');
-      if (numEl) numEl.textContent = String(currentPage + 1);
-      if (totalEl) totalEl.textContent = String(totalPages);
+      const pct = totalPages > 1 ? currentPage / (totalPages - 1) : 0;
+      const posEl = readerRoot.querySelector('[data-role="progress-position"]');
+      if (posEl) {
+        const pctText = Math.round(pct * 100) + '%';
+        posEl.textContent = `${currentPage + 1} / ${totalPages} · ${pctText}`;
+      }
+      updateProgressBar(pct);
     };
 
     const goToPage = (idx, animate = true) => {
@@ -398,6 +413,49 @@
     };
     window.addEventListener('resize', onResize);
 
+    // ---- progress bar (both modes) ----
+    const progressBar = readerRoot.querySelector('[data-role="progress-bar"]');
+    if (progressBar) {
+      let dragActive = false;
+      let dragPointerId = null;
+
+      const pctFromEvent = (e) => {
+        const rect = progressBar.getBoundingClientRect();
+        return Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      };
+      const applyJump = (pct, animate = false) => {
+        if (pagesViewport) {
+          if (totalPages <= 1) return;
+          const target = Math.round(pct * (totalPages - 1));
+          if (target !== currentPage) goToPage(target, animate);
+          else updateProgressBar(pct); // visual feedback even if same page
+        } else if (scrollContainer) {
+          const max = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+          scrollContainer.scrollTop = Math.max(0, max) * pct;
+        }
+      };
+
+      progressBar.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        dragActive = true;
+        dragPointerId = e.pointerId;
+        try { progressBar.setPointerCapture(e.pointerId); } catch {}
+        cancelInitial();
+        applyJump(pctFromEvent(e), false);
+      });
+      progressBar.addEventListener('pointermove', (e) => {
+        if (!dragActive || e.pointerId !== dragPointerId) return;
+        applyJump(pctFromEvent(e), false);
+      });
+      const endDrag = (e) => {
+        if (e.pointerId !== dragPointerId) return;
+        dragActive = false;
+        dragPointerId = null;
+      };
+      progressBar.addEventListener('pointerup', endDrag);
+      progressBar.addEventListener('pointercancel', endDrag);
+    }
+
     // ---- touch swipe (page mode) ----
     if (pagesViewport) {
       let touchStartX = 0, touchStartY = 0, touchActive = false;
@@ -494,6 +552,21 @@
       const novel = await loadNovel(id);
       const lore = await loadWorldbuilding(id);
       app.innerHTML = Views.renderWorldbuilding(novel, lore);
+
+      const tabs = app.querySelector('[data-role="lore-tabs"]');
+      if (tabs) {
+        tabs.addEventListener('click', (e) => {
+          const tabBtn = e.target.closest('[data-lore-tab]');
+          if (!tabBtn) return;
+          const target = tabBtn.getAttribute('data-lore-tab');
+          app.querySelectorAll('[data-lore-tab]').forEach((b) => {
+            b.classList.toggle('active', b.getAttribute('data-lore-tab') === target);
+          });
+          app.querySelectorAll('[data-section]').forEach((s) => {
+            s.hidden = s.getAttribute('data-section') !== target;
+          });
+        });
+      }
     } catch (e) {
       console.error(e);
       app.innerHTML = Views.renderError('설정집을 찾을 수 없습니다', '주소를 확인해주세요.');

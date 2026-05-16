@@ -145,6 +145,16 @@ button { font-family: inherit; }
   box-shadow: var(--shadow-hover);
 }
 .lore-link-icon { font-size: 16px; line-height: 1; }
+
+.home-version {
+  margin-top: 56px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
 .novel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 .novel-card {
   background: var(--bg-elev);
@@ -252,6 +262,37 @@ button { font-family: inherit; }
 }
 
 /* ---- Worldbuilding (설정집) ---- */
+.lore-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.lore-tab {
+  border: none;
+  background: transparent;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+  margin-bottom: -1px;
+  transition: color 0.15s ease;
+}
+.lore-tab:hover { color: var(--text-soft); }
+.lore-tab.active { color: var(--accent); }
+.lore-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.lore-pane[hidden] { display: none; }
 .lore-header {
   margin-bottom: 36px;
   padding-bottom: 22px;
@@ -657,7 +698,10 @@ body[data-page="reader"] .app {
   bottom: 0;
   border-top: 1px solid var(--border);
   transform: translateY(100%);
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding-top: 14px;
   padding-bottom: max(14px, env(safe-area-inset-bottom));
 }
 body[data-reader-ui="visible"] .reader-overlay {
@@ -709,7 +753,88 @@ body[data-reader-ui="visible"] .reader-overlay {
   font-variant-numeric: tabular-nums;
   min-width: 70px;
 }
-.overlay-chapter-nav { display: flex; gap: 6px; }
+.reader-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  user-select: none;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  gap: 12px;
+}
+.progress-chapter {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.progress-position {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+.progress-bar {
+  position: relative;
+  height: 18px;
+  cursor: pointer;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+}
+.progress-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0;
+  pointer-events: none;
+  transition: width 0.18s ease;
+}
+.progress-handle {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border: 2px solid var(--bg-elev);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  left: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: left 0.18s ease;
+}
+.progress-bar:hover .progress-handle,
+.progress-bar:focus-visible .progress-handle {
+  width: 16px;
+  height: 16px;
+}
+.overlay-chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
 .overlay-chap-btn {
   font-size: 13px;
   font-weight: 500;
