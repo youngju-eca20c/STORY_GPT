@@ -1,6 +1,7 @@
 const Storage = (() => {
   const KEY_THEME = 'reader.theme';
   const KEY_FONT = 'reader.fontSize';
+  const KEY_FONT_FAMILY = 'reader.fontFamily';
   const KEY_PROGRESS = 'reader.progress';
   const KEY_MODE = 'reader.mode';
 
@@ -12,6 +13,8 @@ const Storage = (() => {
       return Number.isFinite(v) ? v : 18;
     },
     setFontSize: (v) => localStorage.setItem(KEY_FONT, String(v)),
+    getFontFamily: () => localStorage.getItem(KEY_FONT_FAMILY) || 'serif',
+    setFontFamily: (v) => localStorage.setItem(KEY_FONT_FAMILY, v),
     getProgress: () => {
       try { return JSON.parse(localStorage.getItem(KEY_PROGRESS) || '{}'); }
       catch { return {}; }
@@ -28,7 +31,7 @@ const Storage = (() => {
         return all[novelId] || null;
       } catch { return null; }
     },
-    getMode: () => localStorage.getItem(KEY_MODE) || 'scroll',
+    getMode: () => localStorage.getItem(KEY_MODE) || 'page',
     setMode: (v) => localStorage.setItem(KEY_MODE, v),
   };
 })();

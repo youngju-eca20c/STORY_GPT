@@ -14,6 +14,7 @@
   --radius-sm: 8px;
   --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-serif: 'Noto Serif KR', Georgia, serif;
+  --reader-ff: 'Noto Serif KR', Georgia, serif;
   --reader-fs: 18px;
   --reader-lh: 1.95;
   --reader-width: 720px;
@@ -262,12 +263,16 @@ body[data-page="reader"] .app {
 
 /* Common reader body typography */
 .reader-body {
-  font-family: var(--font-serif);
+  font-family: var(--reader-ff);
   font-size: var(--reader-fs);
   line-height: var(--reader-lh);
   color: var(--text);
   word-break: keep-all;
   overflow-wrap: break-word;
+}
+.reader-title,
+.cover-chapter-name {
+  font-family: var(--reader-ff);
 }
 .reader-body p { margin: 0 0 1.05em; }
 .reader-body p:empty { display: none; }
@@ -595,6 +600,11 @@ body[data-reader-ui="visible"] .reader-overlay {
   border-bottom: 1px solid var(--border);
 }
 .settings-row:last-child { border-bottom: none; }
+.settings-row-stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
 .settings-label {
   font-size: 14px;
   font-weight: 600;
@@ -607,6 +617,16 @@ body[data-reader-ui="visible"] .reader-overlay {
   padding: 4px;
   gap: 0;
 }
+.seg-stretch {
+  width: 100%;
+  display: flex;
+}
+.seg-stretch .seg-btn {
+  flex: 1 1 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  min-width: 0;
+}
 .seg-btn {
   border: none;
   background: transparent;
@@ -617,12 +637,16 @@ body[data-reader-ui="visible"] .reader-overlay {
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 .seg-btn.active {
   background: var(--bg-elev);
   color: var(--accent);
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
+.font-preview-serif    { font-family: 'Noto Serif KR', Georgia, serif; }
+.font-preview-sans     { font-family: 'Noto Sans KR', -apple-system, sans-serif; }
+.font-preview-myeongjo { font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif; }
 .step-btn {
   border: 1px solid var(--border);
   background: var(--bg-elev);

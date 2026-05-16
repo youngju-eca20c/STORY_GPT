@@ -6,6 +6,13 @@
   let novelsIndex = null;
   let readerCtx = null;
 
+  // ---- font families ----
+  const FONTS = {
+    serif:    { stack: "'Noto Serif KR', Georgia, serif" },
+    sans:     { stack: "'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
+    myeongjo: { stack: "'Nanum Myeongjo', 'Noto Serif KR', Georgia, serif" },
+  };
+
   // ---- theme / font ----
   const applyTheme = (theme) => {
     root.setAttribute('data-theme', theme);
@@ -15,6 +22,13 @@
   const applyFontSize = (px) => {
     root.style.setProperty('--reader-fs', `${px}px`);
     Storage.setFontSize(px);
+    updateReaderSettingsUI();
+    if (readerCtx && readerCtx.relayout) readerCtx.relayout();
+  };
+  const applyFontFamily = (id) => {
+    const f = FONTS[id] || FONTS.serif;
+    root.style.setProperty('--reader-ff', f.stack);
+    Storage.setFontFamily(FONTS[id] ? id : 'serif');
     updateReaderSettingsUI();
     if (readerCtx && readerCtx.relayout) readerCtx.relayout();
   };
@@ -28,6 +42,10 @@
     const mode = Storage.getMode();
     document.querySelectorAll('[data-set-mode]').forEach((b) => {
       b.classList.toggle('active', b.getAttribute('data-set-mode') === mode);
+    });
+    const fontFamily = Storage.getFontFamily();
+    document.querySelectorAll('[data-set-font]').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-set-font') === fontFamily);
     });
   };
 
@@ -180,6 +198,11 @@
         const delta = parseInt(fontStep.getAttribute('data-font-step'), 10) || 0;
         const v = Math.max(14, Math.min(28, Storage.getFontSize() + delta));
         applyFontSize(v);
+        return;
+      }
+      const setFontFamily = e.target.closest('[data-set-font]');
+      if (setFontFamily) {
+        applyFontFamily(setFontFamily.getAttribute('data-set-font'));
         return;
       }
     });
@@ -484,6 +507,7 @@
   // ---- init ----
   applyTheme(Storage.getTheme());
   applyFontSize(Storage.getFontSize());
+  applyFontFamily(Storage.getFontFamily());
 
   document.getElementById('themeBtn').addEventListener('click', () => {
     const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

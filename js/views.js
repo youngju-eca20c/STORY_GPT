@@ -189,6 +189,14 @@ const Views = (() => {
               <button data-set-theme="dark" class="seg-btn" data-role="theme-dark">다크</button>
             </div>
           </div>
+          <div class="settings-row settings-row-stacked">
+            <span class="settings-label">글꼴</span>
+            <div class="settings-options seg seg-stretch">
+              <button data-set-font="serif" class="seg-btn font-preview-serif">명조</button>
+              <button data-set-font="sans" class="seg-btn font-preview-sans">고딕</button>
+              <button data-set-font="myeongjo" class="seg-btn font-preview-myeongjo">나눔명조</button>
+            </div>
+          </div>
           <div class="settings-row">
             <span class="settings-label">글자 크기</span>
             <div class="settings-options">
