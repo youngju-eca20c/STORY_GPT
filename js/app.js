@@ -61,7 +61,7 @@
   const showLoading = () => { app.innerHTML = '<div class="loading">불러오는 중…</div>'; };
 
   // ---- pagination ----
-  const paginate = (paragraphs, contentWidth, contentHeight, firstPageHeight) => {
+  const paginate = (paragraphs, contentWidth, contentHeight, firstPageHeight = contentHeight) => {
     const measure = document.createElement('div');
     measure.className = 'reader-body measure-body';
     Object.assign(measure.style, {
@@ -119,24 +119,6 @@
 
     document.body.removeChild(measure);
     return pages;
-  };
-
-  const measureFirstPageHeader = (contentWidth, chapter, novel) => {
-    const m = document.createElement('div');
-    Object.assign(m.style, {
-      position: 'fixed',
-      top: '-99999px',
-      left: '0',
-      width: contentWidth + 'px',
-      visibility: 'hidden',
-      pointerEvents: 'none',
-    });
-    m.innerHTML = `<h1 class="page-title-inline">${Views.escapeHTML(chapter.title)}</h1>
-                   <div class="page-novel-inline">${Views.escapeHTML(novel.title)}</div>`;
-    document.body.appendChild(m);
-    const h = m.scrollHeight;
-    document.body.removeChild(m);
-    return h;
   };
 
   // ---- reader setup ----
@@ -295,36 +277,46 @@
       const cw = Math.max(60, rect.width - padL - padR);
       const ch = Math.max(60, rect.height - padT - padB);
 
-      // First-page header height (chapter title + novel label)
-      const headerH = measureFirstPageHeader(cw, chapter, novel);
-      const firstPageContentH = Math.max(60, ch - headerH);
+      // Capture the paragraph the user is currently on (excluding cover page)
+      const cur = pageData[currentPage];
+      const currentFirstParaIdx = cur && cur.type === 'content' ? cur.startIdx : 0;
+      const wasOnCover = cur && cur.type === 'cover';
 
-      // Remember which paragraph the user is on
-      const currentFirstParaIdx = pageData[currentPage]?.startIdx ?? 0;
-
-      const rawPages = paginate(paragraphs, cw, ch, firstPageContentH);
-      pageData = [];
+      const contentPages = paginate(paragraphs, cw, ch, ch);
+      pageData = [{ type: 'cover', startIdx: -1, endIdx: -1 }];
       let cursor = 0;
-      for (const ps2 of rawPages) {
-        pageData.push({ paragraphs: ps2, startIdx: cursor, endIdx: cursor + ps2.length - 1 });
-        cursor += ps2.length;
+      for (const arr of contentPages) {
+        pageData.push({ type: 'content', paragraphs: arr, startIdx: cursor, endIdx: cursor + arr.length - 1 });
+        cursor += arr.length;
       }
-      totalPages = Math.max(1, pageData.length);
+      totalPages = pageData.length;
 
-      const html = pageData.map((p, i) => {
-        let inner = '';
-        if (i === 0) {
-          inner += `<h1 class="page-title-inline">${Views.escapeHTML(chapter.title)}</h1>
-                    <div class="page-novel-inline">${Views.escapeHTML(novel.title)}</div>`;
+      const coverHTML = novel.cover
+        ? `<div class="cover-art"><img src="${Views.coverPath(novel)}" alt="${Views.escapeHTML(novel.title)}"></div>`
+        : '';
+      const html = pageData.map((p) => {
+        if (p.type === 'cover') {
+          return `<div class="page page-cover">
+            ${coverHTML}
+            <div class="cover-text">
+              <div class="cover-novel-name">${Views.escapeHTML(novel.title)}</div>
+              <h1 class="cover-chapter-name">${Views.escapeHTML(chapter.title)}</h1>
+              ${novel.author ? `<div class="cover-author">${Views.escapeHTML(novel.author)}</div>` : ''}
+            </div>
+          </div>`;
         }
-        inner += `<div class="reader-body">${Views.paragraphHTML(p.paragraphs)}</div>`;
-        return `<div class="page">${inner}</div>`;
+        return `<div class="page"><div class="reader-body">${Views.paragraphHTML(p.paragraphs)}</div></div>`;
       }).join('');
       pagesStrip.innerHTML = html;
 
-      const restoreIdx = pageData.findIndex(
-        (p) => p.startIdx <= currentFirstParaIdx && currentFirstParaIdx <= p.endIdx
-      );
+      let restoreIdx;
+      if (wasOnCover) {
+        restoreIdx = 0;
+      } else {
+        restoreIdx = pageData.findIndex(
+          (p) => p.type === 'content' && p.startIdx <= currentFirstParaIdx && currentFirstParaIdx <= p.endIdx
+        );
+      }
       currentPage = Math.max(0, restoreIdx);
       goToPage(currentPage, false);
     };

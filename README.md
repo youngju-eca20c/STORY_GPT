@@ -19,9 +19,10 @@
 ## 새 작품 추가하는 법
 
 1. `novels/<작품-id>/` 폴더 생성
-2. 챕터 텍스트 파일을 `novels/<작품-id>/chapters/001.txt` 같은 형태로 추가
+2. (선택) 표지 이미지를 같은 폴더에 추가 (예: `cover.jpg`, 800×1200 권장)
+3. 챕터 텍스트 파일을 `novels/<작품-id>/chapters/001.txt` 같은 형태로 추가
    - 문단은 빈 줄로 구분
-3. `novels/<작품-id>/meta.json` 작성:
+4. `novels/<작품-id>/meta.json` 작성:
    ```json
    {
      "title": "작품 제목",
@@ -29,13 +30,16 @@
      "description": "줄거리",
      "tags": ["판타지", "코미디"],
      "status": "연재 중",
+     "cover": "cover.jpg",
      "chapters": [
        { "id": "001", "title": "1화. 제목", "file": "chapters/001.txt" }
      ]
    }
    ```
-4. `data/novels.json`의 `novels` 배열에 작품 메타 항목 추가
-5. commit & push — GitHub Pages가 자동으로 반영
+5. `data/novels.json`의 `novels` 배열에 같은 정보를 한 줄 추가 (cover 포함 가능)
+6. commit & push — GitHub Pages가 자동으로 반영
+
+> `cover` 필드는 novel 폴더 기준 상대 경로입니다. 생략 시 텍스트 표지가 자동으로 표시됩니다.
 
 ## 새 회차 추가하는 법
 

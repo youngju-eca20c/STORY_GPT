@@ -23,6 +23,17 @@ const Views = (() => {
       .map((p) => `<p>${escapeHTML(p).replace(/\n/g, '<br>')}</p>`)
       .join('');
 
+  const coverPath = (novel) =>
+    novel && novel.cover ? `novels/${encodeURIComponent(novel.id)}/${encodeURIComponent(novel.cover)}` : '';
+
+  const renderCover = (novel, extraClass = '') => {
+    const cls = `novel-cover${novel && novel.cover ? ' has-image' : ''}${extraClass ? ' ' + extraClass : ''}`;
+    if (novel && novel.cover) {
+      return `<div class="${cls}"><img src="${coverPath(novel)}" alt="${escapeHTML(novel.title)}" loading="lazy"></div>`;
+    }
+    return `<div class="${cls}">${escapeHTML(novel.title)}</div>`;
+  };
+
   const renderHome = (novels) => {
     if (!novels.length) {
       return `<div class="empty-state">
@@ -34,7 +45,7 @@ const Views = (() => {
       const tags = (n.tags || []).map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('');
       return `
         <a class="novel-card" href="#/novel/${encodeURIComponent(n.id)}">
-          <div class="novel-cover">${escapeHTML(n.title)}</div>
+          ${renderCover(n)}
           <h3 class="novel-title">${escapeHTML(n.title)}</h3>
           <div class="novel-meta">${tags}</div>
           <p class="novel-desc">${escapeHTML(n.description || '')}</p>
@@ -76,7 +87,7 @@ const Views = (() => {
     return `
       <div class="reader-breadcrumb"><a href="#/">← 서재로</a></div>
       <section class="novel-hero">
-        <div class="novel-cover">${escapeHTML(novel.title)}</div>
+        ${renderCover(novel)}
         <div class="novel-hero-info">
           <h1>${escapeHTML(novel.title)}</h1>
           <div class="author">${escapeHTML(novel.author || '작자 미상')}${novel.status ? ' · ' + escapeHTML(novel.status) : ''}</div>
@@ -101,9 +112,13 @@ const Views = (() => {
       ? `#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(nextChapter.id)}`
       : '';
 
+    const coverBlock = novel.cover
+      ? `<div class="reader-cover-image"><img src="${coverPath(novel)}" alt="${escapeHTML(novel.title)}"></div>`
+      : '';
     const scrollContent = `
       <div class="reader-scroll" data-role="scroll-container">
         <div class="reader-scroll-inner">
+          ${coverBlock}
           <h1 class="reader-title">${escapeHTML(chapter.title)}</h1>
           <div class="reader-novel-label">${escapeHTML(novel.title)}</div>
           <div class="reader-body" data-role="scroll-body">${paragraphHTML(paragraphs)}</div>
@@ -195,5 +210,5 @@ const Views = (() => {
     </div>
   `;
 
-  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, escapeHTML };
+  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, escapeHTML, coverPath };
 })();
