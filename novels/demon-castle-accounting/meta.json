@@ -10,6 +10,11 @@
       "id": "001",
       "title": "1화. 전임자는 실종됐습니다",
       "file": "chapters/001.txt"
+    },
+    {
+      "id": "002",
+      "title": "2화. 도착까지 5시간",
+      "file": "chapters/002.txt"
     }
   ]
 }
