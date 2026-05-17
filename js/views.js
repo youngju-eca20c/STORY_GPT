@@ -1,5 +1,5 @@
 const Views = (() => {
-  const APP_VERSION = '0.9.2';
+  const APP_VERSION = '0.9.3';
   const escapeHTML = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
