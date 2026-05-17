@@ -8,6 +8,11 @@
   "chapters": [
     { "id": "001", "title": "1화. 전임자는 실종됐습니다", "file": "chapters/001.txt" },
     { "id": "002", "title": "2화. 정식 침공 접수", "file": "chapters/002.txt" },
-    { "id": "003", "title": "3화. 구비서류 미비", "file": "chapters/003.txt" }
+    { "id": "003", "title": "3화. 구비서류 미비", "file": "chapters/003.txt" },
+    { "id": "004", "title": "4화. 숙식 제공의 함정", "file": "chapters/004.txt" },
+    { "id": "005", "title": "5화. 우수 협력사", "file": "chapters/005.txt" },
+    { "id": "006", "title": "6화. 흑자 나는 사기회사", "file": "chapters/006.txt" },
+    { "id": "007", "title": "7화. 환영공 모르칸", "file": "chapters/007.txt" },
+    { "id": "008", "title": "8화. 존재하지 않는 주주", "file": "chapters/008.txt" }
   ]
 }
