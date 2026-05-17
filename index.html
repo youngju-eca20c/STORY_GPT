@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="웹소설 모음 — 깔끔하고 편안한 읽기 경험">
+<meta name="description" content="웹소설 모음 - 가볍고 편안한 읽기 경험">
 <title>소설 서재</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,27 +15,27 @@
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="#/" aria-label="홈으로">
-      <span class="brand-mark">📖</span>
+      <span class="brand-mark" aria-hidden="true">&#128218;</span>
       <span class="brand-name">소설 서재</span>
     </a>
-    <nav class="topbar-actions">
-      <button class="icon-btn" id="fontDecBtn" title="글자 작게" aria-label="글자 크기 줄이기">A−</button>
+    <nav class="topbar-actions" aria-label="읽기 설정">
+      <button class="icon-btn" id="fontDecBtn" title="글자 작게" aria-label="글자 크기 줄이기">A&#8722;</button>
       <button class="icon-btn" id="fontIncBtn" title="글자 크게" aria-label="글자 크기 늘리기">A+</button>
       <button class="icon-btn" id="themeBtn" title="테마 전환" aria-label="라이트/다크 테마 전환">
-        <span class="theme-icon-light">☀</span>
-        <span class="theme-icon-dark">☾</span>
+        <span class="theme-icon-light" aria-hidden="true">&#9728;</span>
+        <span class="theme-icon-dark" aria-hidden="true">&#9790;</span>
       </button>
     </nav>
   </div>
 </header>
 
 <main id="app" class="app">
-  <div class="loading" id="loadingView">불러오는 중…</div>
+  <div class="loading" id="loadingView">불러오는 중...</div>
 </main>
 
 <footer class="footer">
   <div class="footer-inner">
-    <span>© 소설 서재</span>
+    <span>&copy; 소설 서재</span>
     <span class="footer-sep">·</span>
     <a href="#/" class="footer-link">홈</a>
   </div>

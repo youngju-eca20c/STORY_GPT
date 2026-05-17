@@ -1,98 +1,92 @@
 # 소설 서재 (Story Library)
 
-깔끔하고 확장 가능한 웹소설 리더. 정적 사이트로 GitHub Pages에서 호스팅.
+가볍고 확장 가능한 웹소설 리더입니다. 빌드 도구가 필요 없는 정적 사이트라 GitHub Pages에서 바로 호스팅할 수 있습니다.
 
 ## 라이브 데모
 
-- https://youngju-eca20c.github.io/STORY_CLODE/
+https://youngju-eca20c.github.io/STORY_GPT/
 
 ## 기능
 
-- 📚 여러 작품을 한 사이트에서 관리
-- 🌗 라이트/다크 테마 전환 (선호도 저장)
-- 🔤 글자 크기 조절 (14–28px)
-- 📍 마지막으로 읽은 회차 자동 기억 ("이어 읽기")
-- ← → 이전/다음 화 빠른 이동
-- 📱 모바일 반응형
-- ⚡ 빌드 도구·프레임워크 없는 순수 정적 사이트
+- 여러 작품을 한 사이트에서 관리
+- 라이트/다크 테마 전환
+- 글자 크기 조절
+- 스크롤/페이지 읽기 모드
+- 마지막으로 읽은 회차 저장
+- 작품별 설정집, 등장인물, 미래 계획 탭
+- 모바일 반응형 UI
 
-## 새 작품 추가하는 법
+## 작품 추가 방법
 
-1. `novels/<작품-id>/` 폴더 생성
-2. (선택) 표지 이미지를 같은 폴더에 추가 (예: `cover.jpg`, 800×1200 권장)
-3. 챕터 텍스트 파일을 `novels/<작품-id>/chapters/001.txt` 같은 형태로 추가
-   - 문단은 빈 줄로 구분
-4. `novels/<작품-id>/meta.json` 작성:
-   ```json
-   {
-     "title": "작품 제목",
-     "author": "작가명",
-     "description": "줄거리",
-     "tags": ["판타지", "코미디"],
-     "status": "연재 중",
-     "cover": "cover.jpg",
-     "chapters": [
-       { "id": "001", "title": "1화. 제목", "file": "chapters/001.txt" }
-     ]
-   }
-   ```
-5. `data/novels.json`의 `novels` 배열에 같은 정보를 한 줄 추가 (cover 포함 가능)
-6. commit & push — GitHub Pages가 자동으로 반영
+1. `novels/<작품-id>/` 폴더를 만듭니다.
+2. 선택 사항으로 표지 이미지(`cover.jpg`, 800x1200 권장)를 같은 폴더에 넣습니다.
+3. 회차 텍스트 파일을 `novels/<작품-id>/chapters/001.txt` 형식으로 추가합니다.
+4. `novels/<작품-id>/meta.json`을 작성합니다.
 
-> `cover` 필드는 novel 폴더 기준 상대 경로입니다. 생략 시 텍스트 표지가 자동으로 표시됩니다.
+```json
+{
+  "title": "작품 제목",
+  "author": "작가명",
+  "description": "줄거리",
+  "tags": ["판타지", "코미디"],
+  "status": "연재 중",
+  "cover": "cover.jpg",
+  "chapters": [
+    { "id": "001", "title": "1화. 제목", "file": "chapters/001.txt" }
+  ]
+}
+```
 
-## 설정집(세계관·캐릭터) 추가
+5. `data/novels.json`의 `novels` 배열에 작품 정보를 추가합니다.
+6. commit과 push를 하면 GitHub Pages에 반영됩니다.
 
-`novels/<작품-id>/worldbuilding.json` 파일을 다음 구조로 작성하면 홈 상단 "설정집" 버튼에서 접근 가능:
+`cover` 필드는 작품 폴더 기준의 상대 경로입니다. 생략하면 텍스트 표지가 자동으로 표시됩니다.
+
+## 설정집 추가 방법
+
+`novels/<작품-id>/worldbuilding.json` 파일을 만들면 상단의 설정집 버튼에서 접근할 수 있습니다.
 
 ```json
 {
   "world": [
-    { "title": "마왕성", "body": "본문…" }
+    { "title": "마왕성", "body": "본문" }
   ],
   "characters": [
     {
       "name": "한이안",
       "role": "주인공",
       "tags": ["인간", "회계사"],
-      "body": "본문…"
+      "body": "본문"
     }
   ]
 }
 ```
 
-`body` 안의 줄바꿈은 그대로 렌더링됩니다.
-
-## 새 회차 추가하는 법
-
-해당 작품의 `chapters/` 폴더에 텍스트 파일을 두고, `meta.json`의 `chapters` 배열에 한 줄 추가하면 끝.
+`body` 안의 줄바꿈은 화면에 그대로 반영됩니다.
 
 ## 구조
 
-```
+```text
 .
-├── index.html              # 단일 진입점 (해시 라우터)
-├── css/style.css           # 테마·반응형 스타일
+├── index.html
+├── css/style.css
 ├── js/
-│   ├── storage.js          # localStorage 래퍼
-│   ├── views.js            # 뷰 렌더링
-│   └── app.js              # 라우터 + 데이터 로딩
-├── data/novels.json        # 전체 작품 인덱스
+│   ├── storage.js
+│   ├── views.js
+│   └── app.js
+├── data/novels.json
 └── novels/<id>/
-    ├── meta.json           # 작품·회차 메타
-    └── chapters/*.txt      # 본문
+    ├── meta.json
+    ├── worldbuilding.json
+    └── chapters/*.txt
 ```
 
 ## 로컬에서 보기
 
-`fetch`로 JSON과 텍스트를 불러오기 때문에 `file://` 직접 열기는 동작하지 않음. 간단한 정적 서버가 필요:
+브라우저가 `fetch`로 JSON과 텍스트 파일을 불러오기 때문에 `file://` 직접 열기는 동작하지 않을 수 있습니다. 간단한 정적 서버로 확인하세요.
 
 ```bash
-# Python
 python -m http.server 8000
-
-# Node
-npx serve .
 ```
 
-그 후 http://localhost:8000 접속.
+그 다음 http://localhost:8000 에 접속합니다.
