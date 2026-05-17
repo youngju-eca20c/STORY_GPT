@@ -1,5 +1,5 @@
 const Views = (() => {
-  const APP_VERSION = '0.7.1';
+  const APP_VERSION = '0.8.0';
   const escapeHTML = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -96,11 +96,47 @@ const Views = (() => {
     `;
   };
 
+  const renderCharacterCard = (c) => `
+    <article class="character-card">
+      <div class="character-header">
+        <h3 class="character-name">${escapeHTML(c.name)}</h3>
+        <div class="character-role">${escapeHTML(c.role || '')}</div>
+      </div>
+      ${c.tags && c.tags.length
+        ? `<div class="character-tags">${c.tags.map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>`
+        : ''}
+      <p class="character-body">${escapeHTML(c.body || '')}</p>
+    </article>`;
+
+  const renderFutureCard = (f) => {
+    const sections = [];
+    if (f.summary) sections.push(`<p class="future-summary">${escapeHTML(f.summary)}</p>`);
+    if (f.situation) sections.push(`<div class="future-section"><div class="future-section-label">상황</div><p>${escapeHTML(f.situation)}</p></div>`);
+    if (f.beats) sections.push(`<div class="future-section"><div class="future-section-label">주요 장면</div><p>${escapeHTML(f.beats)}</p></div>`);
+    if (f.rewards) sections.push(`<div class="future-section"><div class="future-section-label">보상 · 떡밥</div><p>${escapeHTML(f.rewards)}</p></div>`);
+    const newChars = (f.new_characters || []);
+    if (newChars.length) {
+      sections.push(`
+        <div class="future-section">
+          <div class="future-section-label">새 등장인물</div>
+          <div class="character-grid future-char-grid">
+            ${newChars.map(renderCharacterCard).join('')}
+          </div>
+        </div>`);
+    }
+    return `
+      <article class="future-card">
+        <h3 class="future-title">${escapeHTML(f.title)}</h3>
+        ${sections.join('')}
+      </article>`;
+  };
+
   const renderWorldbuilding = (novel, lore) => {
     const world = (lore && lore.world) || [];
     const characters = (lore && lore.characters) || [];
+    const future = (lore && lore.future) || [];
 
-    if (!world.length && !characters.length) {
+    if (!world.length && !characters.length && !future.length) {
       return `
         <div class="reader-breadcrumb"><a href="#/">← 서재로</a></div>
         <header class="lore-header">
@@ -113,7 +149,11 @@ const Views = (() => {
         </div>`;
     }
 
-    const defaultTab = world.length ? 'world' : 'characters';
+    const tabDefs = [];
+    if (world.length) tabDefs.push({ id: 'world', label: '세계관' });
+    if (characters.length) tabDefs.push({ id: 'characters', label: '등장인물' });
+    if (future.length) tabDefs.push({ id: 'future', label: '미래계획' });
+    const defaultTab = tabDefs[0].id;
 
     const worldPane = world.length
       ? `<section class="lore-pane" data-section="world"${defaultTab === 'world' ? '' : ' hidden'}>
@@ -131,26 +171,23 @@ const Views = (() => {
     const charactersPane = characters.length
       ? `<section class="lore-pane" data-section="characters"${defaultTab === 'characters' ? '' : ' hidden'}>
           <div class="character-grid">
-            ${characters.map((c) => `
-              <article class="character-card">
-                <div class="character-header">
-                  <h3 class="character-name">${escapeHTML(c.name)}</h3>
-                  <div class="character-role">${escapeHTML(c.role || '')}</div>
-                </div>
-                ${c.tags && c.tags.length
-                  ? `<div class="character-tags">${c.tags.map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>`
-                  : ''}
-                <p class="character-body">${escapeHTML(c.body || '')}</p>
-              </article>
-            `).join('')}
+            ${characters.map(renderCharacterCard).join('')}
+          </div>
+        </section>`
+      : '';
+
+    const futurePane = future.length
+      ? `<section class="lore-pane" data-section="future"${defaultTab === 'future' ? '' : ' hidden'}>
+          <div class="future-warning">⚠ 향후 회차의 스포일러를 포함합니다. 읽기 전이라면 주의하세요.</div>
+          <div class="future-list">
+            ${future.map(renderFutureCard).join('')}
           </div>
         </section>`
       : '';
 
     const tabs = `
       <div class="lore-tabs" role="tablist" data-role="lore-tabs">
-        ${world.length ? `<button class="lore-tab${defaultTab === 'world' ? ' active' : ''}" role="tab" data-lore-tab="world">세계관</button>` : ''}
-        ${characters.length ? `<button class="lore-tab${defaultTab === 'characters' ? ' active' : ''}" role="tab" data-lore-tab="characters">등장인물</button>` : ''}
+        ${tabDefs.map((t) => `<button class="lore-tab${t.id === defaultTab ? ' active' : ''}" role="tab" data-lore-tab="${t.id}">${escapeHTML(t.label)}</button>`).join('')}
       </div>`;
 
     return `
@@ -162,6 +199,7 @@ const Views = (() => {
       ${tabs}
       ${worldPane}
       ${charactersPane}
+      ${futurePane}
     `;
   };
 
