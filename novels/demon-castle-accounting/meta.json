@@ -6,20 +6,13 @@
   "status": "연재 중",
   "cover": "cover.jpg",
   "chapters": [
-    {
-      "id": "001",
-      "title": "1화. 전임자는 실종됐습니다",
-      "file": "chapters/001.txt"
-    },
-    {
-      "id": "002",
-      "title": "2화. 도착까지 5시간",
-      "file": "chapters/002.txt"
-    },
-    {
-      "id": "003",
-      "title": "3화. 비밀문 너머의 비밀문",
-      "file": "chapters/003.txt"
-    }
+    { "id": "001", "title": "1화. 전임자는 실종됐습니다",          "file": "chapters/001.txt" },
+    { "id": "002", "title": "2화. 도착까지 5시간",                  "file": "chapters/002.txt" },
+    { "id": "003", "title": "3화. 비밀문 너머의 비밀문",            "file": "chapters/003.txt" },
+    { "id": "004", "title": "4화. 전송진은 때린다고 고쳐지지 않는다", "file": "chapters/004.txt" },
+    { "id": "005", "title": "5화. 동문에는 회계사가 없다",          "file": "chapters/005.txt" },
+    { "id": "006", "title": "6화. 화산값으로 협상한다",             "file": "chapters/006.txt" },
+    { "id": "007", "title": "7화. 거짓말이 진실보다 정교해야 한다", "file": "chapters/007.txt" },
+    { "id": "008", "title": "8화. 김슨이라는 두 번째 이름",         "file": "chapters/008.txt" }
   ]
 }
