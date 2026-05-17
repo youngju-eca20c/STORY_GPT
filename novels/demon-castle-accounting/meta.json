@@ -15,6 +15,11 @@
       "id": "002",
       "title": "2화. 도착까지 5시간",
       "file": "chapters/002.txt"
+    },
+    {
+      "id": "003",
+      "title": "3화. 비밀문 너머의 비밀문",
+      "file": "chapters/003.txt"
     }
   ]
 }
