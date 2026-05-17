@@ -7,6 +7,6 @@
   "cover": "cover.jpg",
   "chapters": [
     { "id": "001", "title": "1화. 전임자는 실종됐습니다", "file": "chapters/001.txt" },
-    { "id": "002", "title": "2화. 침공자는 오른쪽", "file": "chapters/002.txt" }
+    { "id": "002", "title": "2화. 정식 침공 접수", "file": "chapters/002.txt" }
   ]
 }
