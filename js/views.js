@@ -1,5 +1,5 @@
 const Views = (() => {
-  const APP_VERSION = '0.9.3';
+  const APP_VERSION = '0.10.0';
   const escapeHTML = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -109,11 +109,33 @@ const Views = (() => {
     </article>`;
 
   const renderFutureCard = (f) => {
+    const meta = [];
+    if (f.range) meta.push(f.range);
+    if (f.status) meta.push(f.status);
+    const metaLine = meta.length ? `<div class="future-meta">${meta.map(escapeHTML).join(' · ')}</div>` : '';
+
     const sections = [];
     if (f.summary) sections.push(`<p class="future-summary">${escapeHTML(f.summary)}</p>`);
     if (f.situation) sections.push(`<div class="future-section"><div class="future-section-label">상황</div><p>${escapeHTML(f.situation)}</p></div>`);
+    if (f.objectives) sections.push(`<div class="future-section"><div class="future-section-label">이뤄야 할 것</div><p>${escapeHTML(f.objectives)}</p></div>`);
     if (f.beats) sections.push(`<div class="future-section"><div class="future-section-label">주요 장면</div><p>${escapeHTML(f.beats)}</p></div>`);
-    if (f.rewards) sections.push(`<div class="future-section"><div class="future-section-label">보상 · 떡밥</div><p>${escapeHTML(f.rewards)}</p></div>`);
+    if (f.rewards) sections.push(`<div class="future-section"><div class="future-section-label">아크 보상</div><p>${escapeHTML(f.rewards)}</p></div>`);
+    if (f.hooks) sections.push(`<div class="future-section"><div class="future-section-label">다음 아크 떡밥</div><p>${escapeHTML(f.hooks)}</p></div>`);
+    const scenes = (f.scenes || []);
+    if (scenes.length) {
+      sections.push(`
+        <div class="future-section">
+          <div class="future-section-label">명장면 메모</div>
+          <div class="future-scenes">
+            ${scenes.map((s) => `
+              <div class="future-scene">
+                ${s.label ? `<div class="future-scene-label">${escapeHTML(s.label)}</div>` : ''}
+                <p class="future-scene-body">${escapeHTML(s.body || '')}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>`);
+    }
     const newChars = (f.new_characters || []);
     if (newChars.length) {
       sections.push(`
@@ -127,6 +149,7 @@ const Views = (() => {
     return `
       <article class="future-card">
         <h3 class="future-title">${escapeHTML(f.title)}</h3>
+        ${metaLine}
         ${sections.join('')}
       </article>`;
   };
