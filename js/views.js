@@ -1,5 +1,5 @@
 const Views = (() => {
-  const APP_VERSION = '0.12.0';
+  const APP_VERSION = '0.13.0';
   const escapeHTML = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -96,16 +96,26 @@ const Views = (() => {
     `;
   };
 
+  const portraitURL = (p) => {
+    if (!p) return '';
+    return p.split('/').map(encodeURIComponent).join('/');
+  };
+
   const renderCharacterCard = (c) => `
-    <article class="character-card">
-      <div class="character-header">
-        <h3 class="character-name">${escapeHTML(c.name)}</h3>
-        <div class="character-role">${escapeHTML(c.role || '')}</div>
-      </div>
-      ${c.tags && c.tags.length
-        ? `<div class="character-tags">${c.tags.map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>`
+    <article class="character-card${c.portrait ? ' has-portrait' : ''}">
+      ${c.portrait
+        ? `<div class="character-portrait"><img src="${portraitURL(c.portrait)}" alt="${escapeHTML(c.name)}" loading="lazy"></div>`
         : ''}
-      <p class="character-body">${escapeHTML(c.body || '')}</p>
+      <div class="character-info">
+        <div class="character-header">
+          <h3 class="character-name">${escapeHTML(c.name)}</h3>
+          <div class="character-role">${escapeHTML(c.role || '')}</div>
+        </div>
+        ${c.tags && c.tags.length
+          ? `<div class="character-tags">${c.tags.map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>`
+          : ''}
+        <p class="character-body">${escapeHTML(c.body || '')}</p>
+      </div>
     </article>`;
 
   const renderFutureCard = (f) => {
