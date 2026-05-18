@@ -789,9 +789,9 @@ body[data-page="reader"] .app {
   pointer-events: auto;
   outline: none;
 }
-.tap-zone.left { flex: 0 0 30%; cursor: w-resize; }
+.tap-zone.left { flex: 0 0 30%; cursor: e-resize; }
 .tap-zone.center { flex: 1; cursor: pointer; }
-.tap-zone.right { flex: 0 0 30%; cursor: e-resize; }
+.tap-zone.right { flex: 0 0 30%; cursor: w-resize; }
 .tap-zone:focus-visible { background: color-mix(in srgb, var(--accent) 10%, transparent); }
 
 /* ---- Reader overlay (top / bottom bars) ---- */

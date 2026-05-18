@@ -1,5 +1,5 @@
 const Views = (() => {
-  const APP_VERSION = '0.13.0';
+  const APP_VERSION = '0.13.1';
   const escapeHTML = (s) => String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -316,7 +316,7 @@ const Views = (() => {
         <div class="tap-overlay" data-role="tap-overlay">
           <button class="tap-zone left" data-tap="next" aria-label="다음 페이지"></button>
           <button class="tap-zone center" data-tap="toggle" aria-label="컨트롤 토글"></button>
-          <button class="tap-zone right" data-tap="next" aria-label="다음 페이지"></button>
+          <button class="tap-zone right" data-tap="prev" aria-label="이전 페이지"></button>
         </div>
       </div>`;
 
