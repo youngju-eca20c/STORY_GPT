@@ -220,7 +220,11 @@
       tapOverlay.addEventListener('click', (e) => {
         const z = e.target.closest('[data-tap]');
         if (!z) return;
-        const action = z.getAttribute('data-tap');
+        const action = z.classList.contains('right')
+          ? 'prev'
+          : z.classList.contains('left')
+            ? 'next'
+            : z.getAttribute('data-tap');
         if (action === 'toggle') { toggleUI(); return; }
         if (action === 'prev') {
           cancelInitial();
@@ -393,10 +397,10 @@
       }
       if (e.key === 'Escape' && uiVisible) { setUI(false); e.preventDefault(); return; }
       if (pagesViewport) {
-        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        if (e.key === 'ArrowLeft' || e.key === 'PageDown' || e.key === ' ') {
           if (!ctrl.next() && next) location.hash = `#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(next.id)}`;
           e.preventDefault();
-        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        } else if (e.key === 'ArrowRight' || e.key === 'PageUp') {
           if (!ctrl.prev() && prev) location.hash = `#/read/${encodeURIComponent(novel.id)}/${encodeURIComponent(prev.id)}`;
           e.preventDefault();
         }
