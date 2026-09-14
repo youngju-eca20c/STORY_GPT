@@ -1137,3 +1137,11 @@ body[data-reader-ui="visible"] .reader-overlay {
     background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 }
+
+/* Preserve the complete supplied portrait on the library and reader covers. */
+ .novel-cover.has-image img[src$="/last-observatory/cover.png"],
+.reader-cover-image img[src$="/last-observatory/cover.png"],
+.cover-art img[src$="/last-observatory/cover.png"] {
+  object-fit: contain;
+  background: #10151e;
+}
