@@ -1115,7 +1115,7 @@ body[data-reader-ui="visible"] .reader-overlay {
   .novel-hero-info .author,
   .novel-hero-info .novel-meta { justify-content: center; text-align: center; }
   .novel-hero-info .novel-meta { display: flex; }
-  .novel-grid { grid-template-columns: 1fr; gap: 14px; }
+  .novel-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 10px; }
   .reader-scroll-inner { padding: 70px 20px 100px; }
   .reader-title { font-size: 22px; }
   .page { padding: 64px 22px 76px; }
@@ -1144,4 +1144,18 @@ body[data-reader-ui="visible"] .reader-overlay {
 .cover-art img[src$="/last-observatory/cover.png"] {
   object-fit: contain;
   background: #10151e;
+}
+
+/* Cover-first library: three real work slots on desktop and phone. */
+.novel-grid .novel-card { min-width:0; padding:0; gap:10px; border:0; background:transparent; box-shadow:none; }
+.novel-grid .novel-cover { box-shadow:0 3px 12px #00000012; }
+.novel-grid .novel-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere; }
+.novel-grid .novel-meta, .novel-grid .novel-desc { display:none; }
+.novel-grid .novel-status { margin-top:0; padding-top:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+@media (max-width:720px) {
+ .novel-grid .novel-card { gap:7px; }
+ .novel-grid .novel-cover { border-radius:8px; font-size:14px; padding:8px; }
+ .novel-grid .novel-cover.has-image { padding:0; }
+ .novel-grid .novel-title { font-size:14px; line-height:1.45; font-weight:600; }
+ .novel-grid .novel-status { font-size:12px; }
 }
