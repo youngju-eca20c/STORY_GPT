@@ -155,7 +155,7 @@ button { font-family: inherit; }
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.05em;
 }
-.novel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.novel-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .novel-card {
   background: var(--bg-elev);
   border: 1px solid var(--border);
