@@ -14,13 +14,15 @@
       "id": "001",
       "title": "1화 — 사람?",
       "file": "chapters/001.txt",
-      "published": "2026-09-15"
+      "published": "2026-09-15",
+      "updated": "2026-09-17"
     },
     {
       "id": "002",
       "title": "2화 — 소실",
       "file": "chapters/002.txt",
-      "published": "2026-09-15"
+      "published": "2026-09-15",
+      "updated": "2026-09-17"
     },
     {
       "id": "003",
@@ -60,9 +62,10 @@
     },
     {
       "id": "009",
-      "title": "9화 — 원고 준비 중",
+      "title": "9화 — 전망대",
       "file": "chapters/009.txt",
-      "published": "2026-09-15"
+      "published": "2026-09-17",
+      "updated": "2026-09-17"
     },
     {
       "id": "010",
