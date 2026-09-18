@@ -22,7 +22,7 @@
       "title": "2화 — 소실",
       "file": "chapters/002.txt",
       "published": "2026-09-15",
-      "updated": "2026-09-17"
+      "updated": "2026-09-18"
     },
     {
       "id": "003",
@@ -40,13 +40,15 @@
       "id": "005",
       "title": "5화 — 소실 판정",
       "file": "chapters/005.txt",
-      "published": "2026-09-15"
+      "published": "2026-09-15",
+      "updated": "2026-09-18"
     },
     {
       "id": "006",
       "title": "6화 — 눈",
       "file": "chapters/006.txt",
-      "published": "2026-09-15"
+      "published": "2026-09-15",
+      "updated": "2026-09-18"
     },
     {
       "id": "007",
