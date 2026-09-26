@@ -75,6 +75,12 @@
       "file": "chapters/010.txt",
       "published": "2026-09-15",
       "updated": "2026-09-22"
+    },
+    {
+      "id": "011",
+      "title": "11화 — 재생",
+      "file": "chapters/011.txt",
+      "published": "2026-09-26"
     }
   ],
   "cover": "cover.png"
