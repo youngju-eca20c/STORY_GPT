@@ -24,7 +24,10 @@ android {
     }
     signingConfigs {
         getByName("debug") {
-            storeFile = rootProject.file(".local-signing/debug.keystore")
+            val personalDebugKey = rootProject.file(".local-signing/debug.keystore")
+            if (personalDebugKey.isFile) {
+                storeFile = personalDebugKey
+            }
         }
     }
     buildTypes {
