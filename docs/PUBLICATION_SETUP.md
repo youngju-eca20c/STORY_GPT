@@ -1,6 +1,6 @@
 # STORY GPT Editor 저장/공개 활성화
 
-현재 독자 사이트 주소 `https://youngju-eca20c.github.io/STORY_GPT/#/`를 그대로 사용한다. 아래는 구현 파일이 main에 반영된 뒤 한 번 필요한 설정이다. 이 작업 중 원격 Pages 설정을 자동 변경하거나 원고를 공개하지 않았다.
+현재 독자 사이트 주소 `https://youngju-eca20c.github.io/STORY_GPT/#/`를 그대로 사용한다. 아래는 최초 활성화와 재설정 절차다. 기존 배포 설정은 legacy / main / 루트(/)였으며 같은 사이트 주소에서 GitHub Actions 방식으로 전환한다.
 
 ## 권장 활성화 순서
 

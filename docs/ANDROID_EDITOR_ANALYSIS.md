@@ -38,7 +38,7 @@ LOST라는 제목의 별도 작품 ID는 현재 목록에 없다. `last-observat
 
 ## 배포 분석과 저장/공개 분리
 
-기존 저장소에는 `.github/workflows`가 없었다. README는 Commit/push 후 Pages에 반영된다고 안내한다. GitHub의 기존 `dynamic/pages/pages-build-deployment` 성공 실행 `36246822745`와 main의 `9787a…` 회차 추가 Commit을 대조하여, main 변경이 현재 독자 사이트에 자동 배포되는 실효 동작을 확인했다. 실제 Pages Settings의 publishing source와 폴더 값은 인증된 설정 조회 없이 확정하지 않았다. 현재 자동 반영 동작 때문에 Android 앱을 main에 직접 저장하도록 만들지 않는다.
+기존 저장소에는 `.github/workflows`가 없었다. README는 Commit/push 후 Pages에 반영된다고 안내한다. GitHub의 기존 `dynamic/pages/pages-build-deployment` 성공 실행 `36246822745`와 main의 `9787a…` 회차 추가 Commit을 대조하여, main 변경이 현재 독자 사이트에 자동 배포되는 실효 동작을 확인했다. 인증된 GitHub Pages 설정 조회에서도 build_type=legacy, source.branch=main, source.path=/를 확인했다. 따라서 main 루트의 변경이 자동 배포되는 기존 방식이다. Android 앱은 main에 원고를 직접 저장하지 않으며, 이 구현을 활성화할 때 Pages Source를 GitHub Actions로 전환한다.
 
 가장 단순한 분리는 같은 저장소 안의 `editor-drafts` 저장용 브랜치다. Android 앱은 이 브랜치에 콘텐츠를 Commit한다. 독자 UI/배포 스크립트는 안정된 `main`을 사용한다. `publish-story.yml`은 저장용 브랜치의 정확한 Commit을 한 번 확정한 뒤 공개 파일만 산출물로 구성하여 기존 GitHub Pages 주소로 배포한다. 저장용 브랜치의 UI/스크립트를 실행하지 않는다.
 
