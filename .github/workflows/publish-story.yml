@@ -1,0 +1,77 @@
+name: Publish STORY GPT
+run-name: "STORY GPT publication ${{ inputs.request_id || 'scheduled' }}"
+on:
+  workflow_dispatch:
+    inputs:
+      content_ref:
+        description: "Exact saved content Commit SHA (empty = latest draft branch)"
+        required: false
+        type: string
+      content_branch:
+        description: "Branch holding saved manuscripts"
+        required: false
+        default: editor-drafts
+        type: string
+      request_id:
+        description: "Editor publication request ID"
+        required: false
+        type: string
+  schedule:
+    - cron: '0 15 * * *' # 00:00 Asia/Seoul (UTC+9). GitHub scheduling may be delayed.
+permissions:
+  contents: read
+concurrency:
+  group: story-gpt-publication
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Checkout stable reader and publication tools
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Resolve saved content once
+        id: content
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CONTENT_REF: ${{ inputs.content_ref }}
+          CONTENT_BRANCH: ${{ inputs.content_branch || 'editor-drafts' }}
+        run: python scripts/resolve_content.py
+      - name: Checkout the resolved content snapshot
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.content.outputs.content_sha }}
+          path: _content
+          persist-credentials: false
+      - name: Validate and build the public artifact
+        env:
+          CONTENT_SHA: ${{ steps.content.outputs.content_sha }}
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: |
+          python scripts/build_publication.py --reader . --content _content --output "$RUNNER_TEMP/story-publication" --content-sha "$CONTENT_SHA" --reader-sha "$(git rev-parse HEAD)" --request-id "$REQUEST_ID"
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: false
+      - name: Upload only public files
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/story-publication
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the validated artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

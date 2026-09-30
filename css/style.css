@@ -620,6 +620,12 @@ body[data-page="reader"] .app {
 }
 .reader-body p { margin: 0 0 1.05em; }
 .reader-body p:empty { display: none; }
+.reader-illustration { margin: 1.2em 0; text-align: center; }
+.reader-illustration img { display: block; max-width: 100%; height: auto; margin: auto; border-radius: 8px; }
+.page-illustration .reader-illustration { margin: 0; height: 100%; display: flex; align-items: center; justify-content: center; }
+.page-illustration .reader-illustration img { max-height: 100%; width: auto; object-fit: contain; }
+.novel-representative { margin: 24px 0; text-align: center; }
+.novel-representative img { display: block; max-width: 100%; max-height: 480px; width: auto; height: auto; margin: auto; border-radius: var(--radius); }
 
 /* ---- Scroll mode ---- */
 .reader-scroll {
