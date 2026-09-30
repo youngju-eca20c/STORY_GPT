@@ -63,7 +63,7 @@
   const loadIndex = async () => {
     if (novelsIndex) return novelsIndex;
     const data = await fetchJSON('data/novels.json');
-    novelsIndex = data.novels || [];
+    novelsIndex = (data.novels || []).filter((n) => Views.isPublic(n) && Views.safeSegment(n.id));
     return novelsIndex;
   };
   const loadNovel = async (id) => {
@@ -71,13 +71,14 @@
     const index = await loadIndex();
     const ref = index.find((n) => n.id === id);
     if (!ref) throw new Error('NOT_FOUND_INDEX');
-    const meta = await fetchJSON(`novels/${id}/meta.json`);
-    novelsCache[id] = { ...ref, ...meta, id };
+    const meta = await fetchJSON(`novels/${encodeURIComponent(id)}/meta.json`);
+    if (!Views.isPublic(meta)) throw new Error('NOT_PUBLIC');
+    novelsCache[id] = { ...ref, ...meta, id, chapters: (meta.chapters || []).filter(Views.isPublic) };
     return novelsCache[id];
   };
   const loadWorldbuilding = async (id) => {
     try {
-      return await fetchJSON(`novels/${id}/worldbuilding.json`);
+      return await fetchJSON(`novels/${encodeURIComponent(id)}/worldbuilding.json`);
     } catch {
       return null;
     }
@@ -124,6 +125,14 @@
     };
 
     for (const para of paragraphs) {
+      // An illustration gets a whole page. Its final dimensions cannot push text
+      // outside the page after decoding or an orientation change.
+      if (Views.illustrationOf(para)) {
+        if (buf.length) pages.push(buf);
+        buf = [];
+        pages.push([para]);
+        continue;
+      }
       setBuf([...buf, para]);
       if (fits()) {
         buf.push(para);
@@ -354,7 +363,8 @@
             </div>
           </div>`;
         }
-        return `<div class="page"><div class="reader-body">${Views.paragraphHTML(p.paragraphs)}</div></div>`;
+        const illustration = p.paragraphs.length === 1 && Views.illustrationOf(p.paragraphs[0]);
+        return `<div class="page${illustration ? ' page-illustration' : ''}"><div class="reader-body">${Views.paragraphHTML(p.paragraphs)}</div></div>`;
       }).join('');
       pagesStrip.innerHTML = html;
 
@@ -384,6 +394,8 @@
       relayout: () => { if (pagesViewport) layoutPages(); },
       destroy: () => {
         cancelInitial();
+        clearTimeout(resizeTimer);
+        destroyed = true;
         window.removeEventListener('keydown', onKey);
         window.removeEventListener('resize', onResize);
       },
@@ -486,8 +498,19 @@
       }, { passive: true });
     }
 
+    let destroyed = false;
     if (pagesViewport) {
-      requestAnimationFrame(() => requestAnimationFrame(layoutPages));
+      const images = paragraphs.map(Views.illustrationOf).filter(Boolean).map((item) => new Promise((resolve) => {
+        const image = new Image();
+        const timer = setTimeout(resolve, 8000);
+        image.onload = image.onerror = () => { clearTimeout(timer); resolve(); };
+        image.src = item.path.split('/').map(encodeURIComponent).join('/');
+      }));
+      // Keep navigation responsive even if an image/font cannot be downloaded.
+      requestAnimationFrame(() => { if (!destroyed) layoutPages(); });
+      Promise.allSettled([...images, document.fonts ? document.fonts.ready : Promise.resolve()]).then(() => {
+        if (!destroyed) requestAnimationFrame(() => { if (!destroyed) layoutPages(); });
+      });
     }
 
     updateReaderSettingsUI();
@@ -586,7 +609,8 @@
       const idx = chapters.findIndex((c) => c.id === chapterId);
       if (idx < 0) throw new Error('NO_CHAPTER');
       const chapter = chapters[idx];
-      const text = await fetchText(`novels/${novelId}/${chapter.file}`);
+      if (!/^chapters\/[^/\\%?#:\x00-\x1f]+\.txt$/i.test(chapter.file)) throw new Error('INVALID_CHAPTER_PATH');
+      const text = await fetchText(`novels/${encodeURIComponent(novelId)}/${chapter.file.split('/').map(encodeURIComponent).join('/')}`);
       const prev = idx > 0 ? chapters[idx - 1] : null;
       const next = idx < chapters.length - 1 ? chapters[idx + 1] : null;
 

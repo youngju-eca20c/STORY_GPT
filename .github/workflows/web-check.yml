@@ -1,0 +1,25 @@
+name: Check reader and public content
+on:
+  pull_request:
+    paths: ['js/**', 'css/**', 'index.html', 'data/**', 'novels/**', 'illust/**', 'scripts/**', 'tests/**', '.github/workflows/**']
+  push:
+    branches: [main, editor-drafts]
+    paths: ['js/**', 'css/**', 'index.html', 'data/**', 'novels/**', 'illust/**', 'scripts/**', 'tests/**', '.github/workflows/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Reader regression checks
+        run: node --test tests/reader.test.cjs
+      - name: Publication regression checks
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Validate the current content without deploying
+        env:
+          CONTENT_SHA: ${{ github.sha }}
+        run: python scripts/build_publication.py --reader . --content . --output "$RUNNER_TEMP/story-check" --content-sha "$CONTENT_SHA"

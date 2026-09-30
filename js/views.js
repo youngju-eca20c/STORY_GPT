@@ -19,13 +19,29 @@ const Views = (() => {
     return parts;
   };
 
+  // The editor inserts one image as a standalone paragraph in existing .txt files.
+  // Only the repository's existing illust/ directory is accepted; no HTML is parsed.
+  const illustrationOf = (paragraph) => {
+    const match = /^!\[([^\]\r\n]*)\]\((illust\/[^/\\%?#:\x00-\x1f()]+\.(?:jpe?g|png|webp))\)$/i.exec(paragraph);
+    if (!match || match[2].split('/').some((part) => part === '.' || part === '..')) return null;
+    return { alt: match[1] || '일러스트', path: match[2] };
+  };
+  const isPublic = (item) => item && (item.visibility === undefined || item.visibility === 'public');
+  const safeSegment = (value) => typeof value === 'string' && value.length > 0 &&
+    value !== '.' && value !== '..' && !/[\/\\%?#:\x00-\x1f]/.test(value);
+  const imageURL = (path) => path.split('/').map(encodeURIComponent).join('/');
   const paragraphHTML = (paragraphs) =>
     paragraphs
-      .map((p) => `<p>${escapeHTML(p).replace(/\n/g, '<br>')}</p>`)
+      .map((p) => {
+        const image = illustrationOf(p);
+        return image
+          ? `<figure class="reader-illustration"><img src="${imageURL(image.path)}" alt="${escapeHTML(image.alt)}" decoding="async"></figure>`
+          : `<p>${escapeHTML(p).replace(/\n/g, '<br>')}</p>`;
+      })
       .join('');
 
   const coverPath = (novel) =>
-    novel && novel.cover ? `novels/${encodeURIComponent(novel.id)}/${encodeURIComponent(novel.cover)}` : '';
+    novel && safeSegment(novel.id) && safeSegment(novel.cover) ? `novels/${encodeURIComponent(novel.id)}/${encodeURIComponent(novel.cover)}` : '';
 
   const renderCover = (novel, extraClass = '') => {
     const cls = `novel-cover${novel && novel.cover ? ' has-image' : ''}${extraClass ? ' ' + extraClass : ''}`;
@@ -238,7 +254,7 @@ const Views = (() => {
 
   const renderNovel = (novel, progressChapterId) => {
     const tags = (novel.tags || []).map((t) => `<span class="tag">${escapeHTML(t)}</span>`).join('');
-    const chapters = novel.chapters || [];
+    const chapters = (novel.chapters || []).filter(isPublic);
     const continueChapter = progressChapterId
       ? chapters.find((c) => c.id === progressChapterId)
       : chapters[0];
@@ -273,6 +289,7 @@ const Views = (() => {
           ${continueBtn}
         </div>
       </section>
+      ${safeSegment(novel.representative) ? `<div class="novel-representative"><img src="novels/${encodeURIComponent(novel.id)}/${encodeURIComponent(novel.representative)}" alt="${escapeHTML(novel.title)} 대표 이미지" loading="lazy"></div>` : ''}
       <h2 class="section-title">
         <span>회차 목록</span>
         <span class="chapter-count">총 ${chapters.length}화</span>
@@ -401,5 +418,5 @@ const Views = (() => {
     </div>
   `;
 
-  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, escapeHTML, coverPath, renderWorldbuilding, renderWorldbuildingHub };
+  return { renderHome, renderNovel, renderReader, renderError, parseParagraphs, paragraphHTML, illustrationOf, isPublic, safeSegment, escapeHTML, coverPath, renderWorldbuilding, renderWorldbuildingHub };
 })();
