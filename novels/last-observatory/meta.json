@@ -55,12 +55,6 @@
       "title": "7화 — 백화점",
       "file": "chapters\/007.txt",
       "published": "2026-09-15"
-    },
-    {
-      "id": "008",
-      "title": "8화 — 가설",
-      "file": "chapters\/008.txt",
-      "published": "2026-09-15"
     }
   ],
   "cover": "cover.png"
