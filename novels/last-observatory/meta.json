@@ -61,13 +61,6 @@
       "title": "8화 — 가설",
       "file": "chapters\/008.txt",
       "published": "2026-09-15"
-    },
-    {
-      "id": "009",
-      "title": "9화 — 전망대",
-      "file": "chapters\/009.txt",
-      "published": "2026-09-17",
-      "updated": "2026-09-22"
     }
   ],
   "cover": "cover.png"
