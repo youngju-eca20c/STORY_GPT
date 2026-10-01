@@ -39,5 +39,6 @@
       "published": "2026-09-15"
     }
   ],
-  "cover": "cover.png"
+  "cover": "cover.png",
+  "visibility": "public"
 }

@@ -26,7 +26,8 @@
         "동행"
       ],
       "status": "연재 중",
-      "cover": "cover.png"
+      "cover": "cover.png",
+      "visibility": "public"
     }
   ]
 }
