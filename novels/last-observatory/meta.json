@@ -11,19 +11,19 @@
   "status": "연재 중",
   "chapters": [
     {
-      "id": "001",
-      "title": "1화 — 사람?",
-      "file": "chapters\/001.txt",
-      "published": "2026-09-15",
-      "updated": "2026-09-22"
-    },
-    {
       "id": "004",
       "title": "프롤로그 — 아주 작은 곰",
       "file": "chapters\/004.txt",
       "published": "2026-09-30",
       "visibility": "private",
       "updated": "2026-09-30"
+    },
+    {
+      "id": "001",
+      "title": "1화 — 사람?",
+      "file": "chapters\/001.txt",
+      "published": "2026-09-15",
+      "updated": "2026-09-22"
     },
     {
       "id": "002",
