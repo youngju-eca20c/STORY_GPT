@@ -38,9 +38,23 @@ https://youngju-eca20c.github.io/STORY_GPT/
 ```
 
 5. `data/novels.json`의 `novels` 배열에 작품 정보를 추가합니다.
-6. commit과 push를 하면 GitHub Pages에 반영됩니다.
+6. Commit과 Push 후 공개 workflow를 실행하면 GitHub Pages에 반영됩니다.
+
+현재 공개는 `Publish STORY GPT` Actions의 수동 실행 또는 일일 예약 실행으로 진행합니다. `main`은 독자 화면, `editor-drafts`는 저장한 원고를 공급합니다. 자세한 내용은 [공개 설정](docs/PUBLICATION_SETUP.md)을 참고하세요.
 
 `cover` 필드는 작품 폴더 기준의 상대 경로입니다. 생략하면 텍스트 표지가 자동으로 표시됩니다.
+
+## LOST 원고 갱신
+
+`../manuscripts/`의 프롤로그와 1~3화를 아래 명령으로 가져올 수 있습니다.
+
+```sh
+python scripts/sync_lost_manuscripts.py --source ../manuscripts --date 2026-10-01
+```
+
+회차 제목 앞의 `#`만 리더 형식에 맞게 제거하고 본문은 그대로 가져옵니다. 기존 프롤로그의 회차 ID와 공개 날짜를 유지하며, 가져온 네 회차는 공개로 설정합니다. 다른 회차와 작품 파일은 삭제하지 않습니다. 2026-10-01에는 사용자가 편집한 프롤로그·1~3화 구성에 최신 원고를 반영했습니다. 이전 4~11화는 현재 회차 목록에서 제외되며 Git 이력에 보존되어 있습니다.
+
+표지·등장인물 이미지의 고정된 프레임에는 `object-fit: cover`를 사용합니다. 원본 비율을 유지하며 넘치는 가장자리를 잘라 채우고, 본문 일러스트는 읽기 가능한 원본 비율로 표시합니다.
 
 ## 설정집 추가 방법
 

@@ -11,77 +11,34 @@
   "status": "연재 중",
   "chapters": [
     {
+      "id": "004",
+      "title": "프롤로그 — 아주 작은 곰",
+      "file": "chapters/004.txt",
+      "published": "2026-09-30",
+      "updated": "2026-10-01"
+    },
+    {
       "id": "001",
-      "title": "1화 — 사람?",
+      "title": "1화 — 사람 하나",
       "file": "chapters/001.txt",
       "published": "2026-09-15",
-      "updated": "2026-09-22"
+      "updated": "2026-10-01"
     },
     {
       "id": "002",
-      "title": "2화 — 소실",
+      "title": "2화 — 돌아가는 길",
       "file": "chapters/002.txt",
       "published": "2026-09-15",
-      "updated": "2026-09-18"
+      "updated": "2026-10-01"
     },
     {
       "id": "003",
-      "title": "3화 — 기억하는 것",
+      "title": "3화 — 증언",
       "file": "chapters/003.txt",
-      "published": "2026-09-15"
-    },
-    {
-      "id": "004",
-      "title": "4화 — 증언",
-      "file": "chapters/004.txt",
-      "published": "2026-09-15"
-    },
-    {
-      "id": "005",
-      "title": "5화 — 소실 판정",
-      "file": "chapters/005.txt",
       "published": "2026-09-15",
-      "updated": "2026-09-18"
-    },
-    {
-      "id": "006",
-      "title": "6화 — 눈",
-      "file": "chapters/006.txt",
-      "published": "2026-09-15",
-      "updated": "2026-09-18"
-    },
-    {
-      "id": "007",
-      "title": "7화 — 백화점",
-      "file": "chapters/007.txt",
-      "published": "2026-09-15"
-    },
-    {
-      "id": "008",
-      "title": "8화 — 가설",
-      "file": "chapters/008.txt",
-      "published": "2026-09-15"
-    },
-    {
-      "id": "009",
-      "title": "9화 — 전망대",
-      "file": "chapters/009.txt",
-      "published": "2026-09-17",
-      "updated": "2026-09-22"
-    },
-    {
-      "id": "010",
-      "title": "10화 — 내일 동기화 때",
-      "file": "chapters/010.txt",
-      "published": "2026-09-15",
-      "updated": "2026-09-22"
-    },
-    {
-      "id": "011",
-      "title": "11화 — 재생",
-      "file": "chapters/011.txt",
-      "published": "2026-09-26"
+      "updated": "2026-10-01"
     }
   ],
-  "cover": "cover.png"
+  "cover": "cover.png",
+  "visibility": "public"
 }
