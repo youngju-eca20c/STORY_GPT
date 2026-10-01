@@ -25,18 +25,18 @@
       "updated": "2026-09-18"
     },
     {
-      "id": "003",
-      "title": "3화 — 기억하는 것",
-      "file": "chapters\/003.txt",
-      "published": "2026-09-15"
-    },
-    {
       "id": "004",
       "title": "프롤로그 — 아주 작은 곰",
       "file": "chapters\/004.txt",
       "published": "2026-09-30",
       "visibility": "private",
       "updated": "2026-09-30"
+    },
+    {
+      "id": "003",
+      "title": "3화 — 기억하는 것",
+      "file": "chapters\/003.txt",
+      "published": "2026-09-15"
     }
   ],
   "cover": "cover.png"
